@@ -718,7 +718,6 @@
                 <button class="tab-btn" data-tab="methods">📌 Методы</button>
                 <button class="tab-btn" data-tab="checklist">✅ Чек-лист</button>
                 <button class="tab-btn" data-tab="important">⚠️ Важно</button>
-                <button class="tab-btn" data-tab="scenarios">📋 Сценарии</button>
                 <button class="tab-btn" data-tab="redflags">🚩 Флаги</button>
                 <button class="tab-btn" data-tab="glossary">📖 Глоссарий</button>
                 <div class="search-wrapper">
@@ -856,6 +855,15 @@
                         <li>Обязательно включите <strong>RegEx</strong> (между Clear Search и Match Case)</li>
                         <li>Нажмите "Искать" (Find)</li>
                         <li>Просматривайте странные процессы</li>
+                    </ol>
+                    <h4>Проверка через csrss.exe</h4>
+                    <ol style="padding-left:22px;">
+                        <li>Запуск от имени администратора</li>
+                        <li>System -> Options -> Enable Kernel Mode Driver</li>
+                        <li>Завершить все процессы античитов</li>
+                        <li>Search Processes -> csrss.exe</li>
+                        <li>Выбираем один из двух процессов в зависимости от нужды</li>
+                        <li>Properties -> Options -> Strings -> Отмечаем все галочки + ставим минимальную длину 4 -> Filter -> RegEx (case-insensitive) -> Вставляем текст</li>
                     </ol>
                 </div>
                 <div class="card">
@@ -1001,7 +1009,6 @@
                     <ul style="padding-left:22px;">
                         <li>🚫 <strong>Никогда</strong> не скачивайте инструменты с неофициальных сайтов</li>
                         <li>🚫 Не предлагайте свои версии программ</li>
-                        <li>🚫 Не проверяйте CS:GO — только CS2</li>
                         <li>⚠️ Фиксируйте все доказательства (видеозапись, логи)</li>
                     </ul>
                 </div>
@@ -1027,51 +1034,6 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- ====== СЦЕНАРИИ ====== -->
-            <div id="scenarios" class="tab-content">
-                <h1>📋 Сценарии проверки</h1>
-                <div class="card">
-                    <h3>⚡ Экспресс-проверка (10–15 минут)</h3>
-                    <p>Когда нужно быстро принять решение о допуске к игре.</p>
-                    <ol style="padding-left:22px;">
-                        <li><strong>Визуальный осмотр</strong> — проверка рабочего стола, открытых окон, папки "Загрузки".</li>
-                        <li><strong>Everything</strong> — поиск по <code>ext:.exe|ext:.dll</code> <strong>сортировка по дате доступа / размеру</strong>
-                        <li><strong>Prefetch</strong> — быстрый просмотр через WinPrefetchView на предмет недавно запущенных подозрительных .exe.</li>
-                        <li><strong>Процессы</strong> — проверка диспетчера задач на аномальные имена процессов (например, <code>csgo.exe</code> в неправильной папке).</li>
-                        <li><strong>Реестр</strong> — быстрая проверка <code>HKEY_CURRENT_USER\Software</code> на ключи с названиями читов.</li>
-                    </ol>
-                    <p><strong>Результат:</strong> если ничего не найдено — допуск. Если есть сомнения — переходим к полной проверке.</p>
-                </div>
-                <div class="card">
-                    <h3>🔬 Полная проверка (1–2 часа)</h3>
-                    <p>Для сложных случаев или при подозрении на продвинутые читы.</p>
-                    <ol style="padding-left:22px;">
-                        <li><strong>Всё из экспресс-проверки</strong>.</li>
-                        <li><strong>JournalTrace</strong> — детальный анализ удалений и переименований за последние 30 дней.</li>
-                        <li><strong>System Informer</strong> — анализ csrss.exe и других процессов на предмет строк-путей к .exe/.dll.</li>
-                        <li><strong>ShellBagAnalyzer</strong> — проверка открытых папок (включая удалённые).</li>
-                        <li><strong>BAM Parser</strong> — извлечение истории запусков из реестра.</li>
-                        <li><strong>UserAssistsView</strong> — дополнительные следы запусков через оболочку.</li>
-                        <li><strong>Проверка автозагрузки</strong> (shell:startup, задачи планировщика).</li>
-                        <li><strong>Проверка сетевых соединений</strong> (netstat -ano) на предмет связи с внешними серверами.</li>
-                    </ol>
-                    <p><strong>Результат:</strong> полный отчёт с найденными уликами или их отсутствием.</p>
-                </div>
-                <div class="card">
-                    <h3>⚠️ Проверка после бана</h3>
-                    <p>Когда пользователь уже получил бан и утверждает, что он «чистый».</p>
-                    <ol style="padding-left:22px;">
-                        <li><strong>Сбор максимального количества данных</strong> — все логи, дампы памяти, скриншоты.</li>
-                        <li><strong>Анализ временных меток</strong> — сопоставить время бана с активностью в системе (запуски, изменения файлов).</li>
-                        <li><strong>Поиск следов античита</strong> — например, логи VAC или Faceit AC, если они есть на диске.</li>
-                        <li><strong>Проверка на спуфинг</strong> — поиск программ для подмены HWID (например, <code>spoofer.exe</code>, <code>driver.sys</code>).</li>
-                        <li><strong>Анализ скрытых процессов</strong> — с помощью GMER или аналогичных утилит.</li>
-                    </ol>
-                    <p><strong>Результат:</strong> заключение о наличии или отсутствии доказательств, подтверждающих бан.</p>
-                </div>
-            </div>
-
             <!-- ====== КРАСНЫЕ ФЛАГИ ====== -->
             <div id="redflags" class="tab-content">
                 <h1>🚩 Красные флаги (признаки возможных читов)</h1>
