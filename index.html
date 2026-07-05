@@ -967,7 +967,7 @@
                     </ol>
                     <h4>🔹 Обнаружение .dll и .exe одновременно</h4>
                     <p>Для отображения обоих типов файлов в одном результате используйте универсальный regex:</p>
-                    <pre><code>^([a-zA-Z]:\\.+)\\?$</code> <button class="copy-btn" data-copy="^([a-zA-Z]:\\.+)\\?$">Копировать</button></pre>
+                    <pre><code>^[a-zA-Z]:\\.+(\\)?.*?$</code> <button class="copy-btn" data-copy="^[a-zA-Z]:\\.+(\\)?.*?$">Копировать</button></pre>
                     <h4>🔍 Поиск файлов с изменёнными расширениями</h4>
                     <p>Для выявления файлов, у которых расширение было переименовано:</p>
                     <pre><code>^[a-z]:.+\.((?!exe|pyd|manifest|dll|config|\\|cpl|microsoft-|shell).)*$</code> <button class="copy-btn" data-copy="^[a-z]:.+\.((?!exe|pyd|manifest|dll|config|\\|cpl|microsoft-|shell).)*$">Копировать</button></pre>
