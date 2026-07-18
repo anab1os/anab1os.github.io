@@ -1,58 +1,147 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Правила проверки CS2 — Полный гайд</title>
     <style>
-        /* ===== ПЕРЕМЕННЫЕ ===== */
+        /* ===== ПЕРЕМЕННЫЕ / ТОКЕНЫ ===== */
         :root {
-            --bg-color: #0a0a0f;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-color: #e8e8f0;
-            --accent-color: #bb86fc;
-            --accent-gradient: linear-gradient(135deg, #bb86fc, #03dac6);
-            --secondary-accent: #03dac6;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --alert-color: #cf6679;
-            --modal-overlay: rgba(0, 0, 0, 0.6);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --glass-blur: blur(12px);
-            --scrollbar-bg: #1a1a24;
-            --card-hover-transform: translateY(-4px);
-            --search-bg: rgba(255,255,255,0.06);
-            --search-text: #e8e8f0;
+            --bg: #07070c;
+            --bg-2: #0b0b13;
+            --surface: rgba(255, 255, 255, 0.028);
+            --surface-2: rgba(255, 255, 255, 0.045);
+            --surface-strong: rgba(20, 20, 30, 0.72);
+            --text: #edecf5;
+            --text-dim: #a8a6bd;
+            --text-faint: #6f6d85;
+            --accent: #a78bfa;
+            --accent-2: #22d3ee;
+            --accent-3: #f472b6;
+            --secondary-accent: #22d3ee;
+            --grad: linear-gradient(120deg, #a78bfa 0%, #7c9dfc 45%, #22d3ee 100%);
+            --grad-soft: linear-gradient(120deg, rgba(167, 139, 250, 0.18), rgba(34, 211, 238, 0.14));
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.14);
+            --alert: #fb7185;
+            --ok: #34d399;
+            --warn: #fbbf24;
+            --code-bg: rgba(4, 4, 9, 0.65);
+            --modal-overlay: rgba(4, 4, 10, 0.66);
+            --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
+            --shadow-sm: 0 8px 24px -12px rgba(0, 0, 0, 0.65);
+            --blur: blur(18px) saturate(140%);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --ring: 0 0 0 3px rgba(167, 139, 250, 0.22);
+            --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', 'SFMono-Regular', 'Consolas', monospace;
         }
+
         [data-theme="light"] {
-            --bg-color: #f0f0f5;
-            --card-bg: rgba(255, 255, 255, 0.6);
-            --text-color: #1a1a24;
-            --border-color: rgba(0, 0, 0, 0.08);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --modal-overlay: rgba(0, 0, 0, 0.3);
-            --scrollbar-bg: #d0d0d8;
-            --card-hover-transform: translateY(-4px);
-            --search-bg: rgba(0,0,0,0.04);
-            --search-text: #1a1a24;
+            --bg: #eef0f7;
+            --bg-2: #e6e8f2;
+            --surface: rgba(255, 255, 255, 0.72);
+            --surface-2: rgba(255, 255, 255, 0.9);
+            --surface-strong: rgba(255, 255, 255, 0.86);
+            --text: #16151f;
+            --text-dim: #4c4a5e;
+            --text-faint: #86849a;
+            --border: rgba(20, 16, 40, 0.1);
+            --border-strong: rgba(20, 16, 40, 0.18);
+            --code-bg: rgba(15, 15, 30, 0.06);
+            --modal-overlay: rgba(30, 28, 50, 0.32);
+            --shadow: 0 24px 60px -24px rgba(60, 50, 110, 0.28);
+            --shadow-sm: 0 10px 26px -16px rgba(60, 50, 110, 0.25);
+            --code-bg: rgba(15, 15, 35, 0.05);
         }
+
         /* ===== БАЗА ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding-top: 60px;
-            transition: background 0.4s, color 0.3s;
-            min-height: 100vh;
+
+        html {
+            scroll-behavior: auto;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 8px; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding-top: 74px;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            letter-spacing: 0.1px;
+            overflow-x: hidden;
+        }
+
+        /* Декоративный фон (aurora) */
+        .bg-aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(48rem 48rem at 12% -8%, rgba(124, 58, 237, 0.22), transparent 60%),
+                radial-gradient(42rem 42rem at 108% 12%, rgba(34, 211, 238, 0.16), transparent 55%),
+                radial-gradient(46rem 46rem at 50% 118%, rgba(244, 114, 182, 0.12), transparent 60%);
+        }
+
+        [data-theme="light"] .bg-aurora {
+            opacity: 0.55;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 46px 46px;
+            mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 20%, transparent 75%);
+        }
+
+        [data-theme="light"] .bg-grid {
+            background-image:
+                linear-gradient(rgba(30, 20, 60, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 20, 60, 0.04) 1px, transparent 1px);
+        }
+
+        ::selection {
+            background: rgba(167, 139, 250, 0.35);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent), var(--accent-2));
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--accent-2), var(--accent));
+            background-clip: padding-box;
+        }
 
         /* ===== НАВБАР ===== */
         .navbar {
@@ -60,656 +149,1062 @@
             top: 0;
             left: 0;
             right: 0;
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--surface-strong);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-bottom: 1px solid var(--border);
             z-index: 1000;
-            padding: 0 16px;
+            padding: 0 20px;
             transition: background 0.3s, border-color 0.3s;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
+
+        .navbar::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), rgba(34, 211, 238, 0.4), transparent);
+            opacity: 0.6;
+        }
+
         .nav-container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 60px;
-            flex-wrap: nowrap;
+            height: 74px;
+            gap: 14px;
+        }
+
+        .logo {
+            font-family: var(--display);
+            font-size: 1.32rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: var(--accent-gradient);
+
+        .logo span.mark {
+            background: var(--grad);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            margin-right: 12px;
+            -webkit-text-fill-color: transparent;
         }
+
         .nav-tabs {
             display: flex;
-            gap: 4px;
+            gap: 6px;
+            align-items: center;
             flex-wrap: wrap;
             justify-content: flex-end;
-            align-items: center;
         }
+
         .tab-btn {
-            padding: 6px 14px;
+            padding: 8px 15px;
             background: transparent;
-            color: var(--text-color);
-            border: none;
-            border-radius: 8px;
+            color: var(--text-dim);
+            border: 1px solid transparent;
+            border-radius: 11px;
             cursor: pointer;
+            font-family: var(--sans);
             font-weight: 500;
-            font-size: 0.8rem;
-            transition: all 0.25s ease;
+            font-size: 0.82rem;
+            transition: all 0.22s ease;
             white-space: nowrap;
-            opacity: 0.7;
         }
+
         .tab-btn:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            background: var(--surface-2);
+            border-color: var(--border);
+            transform: translateY(-1px);
         }
+
         .tab-btn.active {
-            opacity: 1;
-            background: var(--accent-gradient);
-            color: #000;
-            box-shadow: 0 4px 16px rgba(187, 134, 252, 0.3);
+            color: #0a0713;
+            background: var(--grad);
+            border-color: transparent;
+            box-shadow: 0 6px 20px -6px rgba(167, 139, 250, 0.6);
+            font-weight: 600;
         }
+
+        [data-theme="light"] .tab-btn.active {
+            color: #fff;
+        }
+
         .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 1.3rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.05rem;
             cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             transition: all 0.3s;
-            opacity: 0.7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
+
         .theme-toggle:hover {
-            opacity: 1;
-            transform: rotate(20deg);
-            background: rgba(255, 255, 255, 0.06);
+            transform: rotate(-18deg) scale(1.05);
+            border-color: var(--accent);
+            box-shadow: var(--ring);
         }
+
         /* ===== ПОИСК ===== */
         .search-wrapper {
             display: flex;
             align-items: center;
-            background: var(--search-bg);
-            border-radius: 20px;
+            background: var(--surface-2);
+            border-radius: 12px;
             padding: 4px 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-            margin-left: 4px;
+            border: 1px solid var(--border);
+            transition: all 0.25s;
         }
+
         .search-wrapper:focus-within {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.2);
+            border-color: var(--accent);
+            box-shadow: var(--ring);
         }
+
         .search-icon {
-            color: var(--text-color);
             opacity: 0.5;
             font-size: 0.9rem;
-            margin-right: 6px;
+            margin-right: 8px;
         }
+
         .search-input {
             background: transparent;
             border: none;
-            color: var(--search-text);
-            font-size: 0.85rem;
-            padding: 6px 0;
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 0.86rem;
+            padding: 7px 0;
             width: 130px;
             outline: none;
             transition: width 0.3s;
         }
+
         .search-input::placeholder {
-            color: var(--text-color);
-            opacity: 0.4;
+            color: var(--text-faint);
         }
+
         .search-input:focus {
-            width: 180px;
+            width: 190px;
         }
+
         .search-clear {
             background: none;
             border: none;
-            color: var(--text-color);
-            opacity: 0.4;
+            color: var(--text-dim);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             padding: 0 4px;
             display: none;
+            transition: color 0.2s;
         }
+
         .search-clear.visible {
             display: block;
         }
+
         .search-clear:hover {
-            opacity: 0.8;
+            color: var(--alert);
         }
+
         .search-count {
-            font-size: 0.7rem;
-            opacity: 0.5;
+            font-size: 0.72rem;
+            color: var(--text-faint);
             margin-left: 6px;
             white-space: nowrap;
         }
+
         /* ===== ОСНОВНАЯ СЕТКА ===== */
         .main-container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
-            gap: 20px;
-            padding: 20px;
+            gap: 26px;
+            padding: 34px 24px 80px;
         }
+
         /* ===== САЙДБАР ===== */
         .sidebar {
-            width: 250px;
+            width: 258px;
             flex-shrink: 0;
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-radius: 16px;
-            padding: 18px;
+            background: var(--surface);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: var(--radius);
+            padding: 20px;
             height: fit-content;
             position: sticky;
-            top: 80px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
-            max-height: calc(100vh - 100px);
+            top: 96px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            max-height: calc(100vh - 120px);
             overflow-y: auto;
+            transition: background 0.3s, border-color 0.3s;
         }
+
         .sidebar h3 {
-            font-size: 0.95rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
             margin-bottom: 14px;
-            color: var(--accent-color);
+            color: var(--text-faint);
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
+
         .sidebar-list {
             list-style: none;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
-        .sidebar-list li {
-            margin: 4px 0;
-        }
+
         .sidebar-list a {
-            color: var(--text-color);
+            color: var(--text-dim);
             text-decoration: none;
             font-size: 0.85rem;
             cursor: pointer;
             display: block;
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 7px 12px;
+            border-radius: 10px;
             transition: all 0.2s;
-            opacity: 0.8;
+            border-left: 2px solid transparent;
         }
+
         .sidebar-list a:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--accent-color);
-            transform: translateX(4px);
+            color: var(--text);
+            background: var(--surface-2);
+            border-left-color: var(--accent);
+            transform: translateX(3px);
         }
-        .sidebar-list .sub-item {
-            padding-left: 20px;
+
+        .sidebar-list .sub-item a {
+            padding-left: 24px;
             font-size: 0.8rem;
-            opacity: 0.6;
+            color: var(--text-faint);
         }
-        .sidebar-list .sub-item a:hover {
-            opacity: 1;
-        }
+
         /* ===== КОНТЕНТ ===== */
         .content {
             flex: 1;
             min-width: 0;
         }
+
+        /* ===== ЗАГОЛОВКИ ===== */
+        h1 {
+            font-family: var(--display);
+            font-size: clamp(1.6rem, 3vw, 2.15rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            margin-bottom: 26px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: linear-gradient(180deg, var(--text), var(--text-dim));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2,
+        h3,
+        h4 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--accent-2);
+            margin-top: 14px;
+        }
+
         /* ===== КАРТОЧКИ ===== */
         .card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-radius: 16px;
-            padding: 20px 22px;
-            margin-bottom: 18px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
-            animation: cardFadeIn 0.5s ease forwards;
+            background: var(--surface);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: var(--radius);
+            padding: 24px 26px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(130deg, rgba(167, 139, 250, 0.5), transparent 40%, transparent 60%, rgba(34, 211, 238, 0.4));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             opacity: 0;
-            transform: translateY(16px);
+            transition: opacity 0.35s;
+            pointer-events: none;
         }
+
         .card:hover {
-            transform: var(--card-hover-transform);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
-            border-color: rgba(187, 134, 252, 0.2);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: transparent;
         }
-        [data-theme="light"] .card:hover {
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        .card:hover::before {
+            opacity: 1;
         }
-        .card:nth-child(1) { animation-delay: 0.05s; }
-        .card:nth-child(2) { animation-delay: 0.10s; }
-        .card:nth-child(3) { animation-delay: 0.15s; }
-        .card:nth-child(4) { animation-delay: 0.20s; }
-        .card:nth-child(5) { animation-delay: 0.25s; }
-        .card:nth-child(6) { animation-delay: 0.30s; }
-        @keyframes cardFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+
         .card.hidden {
             display: none !important;
         }
+
         .card.highlight {
-            border-color: var(--accent-color) !important;
-            box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3) !important;
+            border-color: transparent;
         }
+
+        .card.highlight::before {
+            opacity: 1;
+            background: linear-gradient(130deg, var(--accent), var(--accent-2));
+        }
+
         .card h3 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 1.12rem;
             font-weight: 600;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
+
         .card h3 a {
-            color: var(--accent-color);
+            color: var(--accent);
             text-decoration: none;
             transition: color 0.2s;
+            border-bottom: 1px solid transparent;
         }
+
         .card h3 a:hover {
-            color: var(--secondary-accent);
+            color: var(--accent-2);
+            border-bottom-color: var(--accent-2);
         }
+
+        .card p {
+            margin-bottom: 8px;
+            color: var(--text-dim);
+        }
+
+        .card ol,
+        .card ul {
+            color: var(--text-dim);
+        }
+
+        .card ol li,
+        .card ul li {
+            margin-bottom: 6px;
+        }
+
+        .card strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
         .card .tool-details-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 18px;
-            background: var(--accent-gradient);
-            color: #000;
-            border: none;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            padding: 8px 18px;
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+            border-radius: 11px;
+            font-family: var(--sans);
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.28s;
             float: right;
-            box-shadow: 0 4px 16px rgba(187, 134, 252, 0.2);
         }
+
+        .card .tool-details-btn::after {
+            content: "→";
+            transition: transform 0.28s;
+        }
+
         .card .tool-details-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 24px rgba(187, 134, 252, 0.4);
+            background: var(--grad);
+            color: #0a0713;
+            border-color: transparent;
+            box-shadow: 0 8px 22px -8px rgba(167, 139, 250, 0.7);
         }
-        .card p {
-            margin-bottom: 4px;
-            opacity: 0.9;
+
+        [data-theme="light"] .card .tool-details-btn:hover {
+            color: #fff;
         }
-        h1 {
-            font-size: 1.6rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+
+        .card .tool-details-btn:hover::after {
+            transform: translateX(4px);
         }
-        h2, h3, h4 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        h4 {
-            font-size: 1rem;
-            font-weight: 500;
-            opacity: 0.9;
-        }
+
+        /* ===== ALERT ===== */
         .alert {
-            background: rgba(207, 102, 121, 0.12);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border-left: 4px solid var(--alert-color);
-            padding: 14px 18px;
-            border-radius: 12px;
-            margin: 16px 0;
-            font-weight: 500;
-            font-size: 0.95rem;
-            border: 1px solid rgba(207, 102, 121, 0.15);
+            position: relative;
+            background: linear-gradient(120deg, rgba(251, 113, 133, 0.14), rgba(251, 113, 133, 0.05));
+            border: 1px solid rgba(251, 113, 133, 0.25);
+            border-left: 3px solid var(--alert);
+            padding: 16px 20px 16px 46px;
+            border-radius: var(--radius-sm);
+            margin: 18px 0;
+            font-weight: 400;
+            font-size: 0.94rem;
+            color: var(--text);
         }
+
+        .alert::before {
+            content: "⚠";
+            position: absolute;
+            left: 16px;
+            top: 15px;
+            font-size: 1.05rem;
+            color: var(--alert);
+        }
+
+        .alert strong {
+            color: #fda4af;
+        }
+
+        [data-theme="light"] .alert strong {
+            color: #be123c;
+        }
+
+        /* ===== TOOL GRID ===== */
         .tool-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
         }
-        .copy-btn {
-            background: var(--accent-gradient);
-            color: #000;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-left: 8px;
-            box-shadow: 0 2px 8px rgba(187, 134, 252, 0.2);
+
+        .tool-grid .card {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
         }
-        .copy-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(187, 134, 252, 0.4);
+
+        .tool-grid .card p {
+            flex: 1;
         }
-        pre, code {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-family: 'JetBrains Mono', 'Consolas', monospace;
-            font-size: 0.85rem;
-            overflow-x: auto;
-            word-break: break-all;
-            border: 1px solid var(--border-color);
+
+        /* ===== КОД ===== */
+        pre,
+        code {
+            font-family: var(--mono);
+            font-size: 0.83rem;
         }
-        [data-theme="light"] pre, [data-theme="light"] code {
-            background: rgba(0, 0, 0, 0.04);
+
+        code {
+            background: var(--code-bg);
+            padding: 3px 8px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            color: var(--accent-2);
+            word-break: break-word;
         }
+
+        [data-theme="light"] code {
+            color: #0e7490;
+        }
+
         pre {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 6px;
-            margin: 6px 0;
+            gap: 8px;
+            margin: 10px 0;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            overflow-x: auto;
+            position: relative;
         }
+
         pre code {
             background: transparent;
             padding: 0;
-            flex: 1;
             border: none;
+            flex: 1;
+            min-width: 120px;
+            color: #d6d3f0;
+            word-break: break-all;
         }
+
+        [data-theme="light"] pre code {
+            color: #2a2740;
+        }
+
+        .copy-btn {
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+            padding: 5px 13px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 0.72rem;
+            font-weight: 600;
+            transition: all 0.25s;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: var(--grad);
+            color: #0a0713;
+            border-color: transparent;
+        }
+
+        [data-theme="light"] .copy-btn:hover {
+            color: #fff;
+        }
+
+        /* ===== ВКЛАДКИ ===== */
         .tab-content {
             display: none;
-            animation: fadeIn 0.35s ease;
         }
+
         .tab-content.active {
             display: block;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+
+        /* ===== БЕЙДЖИ / МЕТОДЫ ===== */
         .tier-badge {
-            background: var(--accent-gradient);
-            color: #000;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.7rem;
+            background: var(--grad);
+            color: #0a0713;
+            padding: 5px 15px;
+            border-radius: 999px;
+            font-family: var(--display);
+            font-size: 0.72rem;
             font-weight: 700;
+            letter-spacing: 0.6px;
             vertical-align: middle;
-            display: inline-block;
-            margin-right: 6px;
-            box-shadow: 0 2px 12px rgba(187, 134, 252, 0.3);
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 6px 18px -6px rgba(167, 139, 250, 0.6);
         }
+
+        [data-theme="light"] .tier-badge {
+            color: #fff;
+        }
+
         .method-card {
-            border-left: 3px solid var(--accent-color);
-            padding-left: 14px;
-            margin: 8px 0;
-            font-size: 0.95rem;
+            border-left: 3px solid var(--accent);
+            background: var(--surface);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 12px 0;
+            font-size: 0.92rem;
+            color: var(--text-dim);
         }
-        .method-card.tier3 { border-color: #4caf50; }
-        .method-card.tier2 { border-color: #ff9800; }
+
+        .method-card.tier3 {
+            border-color: var(--ok);
+        }
+
+        .method-card.tier2 {
+            border-color: var(--warn);
+        }
+
         .keyboard-shortcut {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 2px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-family: monospace;
-            border: 1px solid var(--border-color);
+            background: var(--surface-2);
+            padding: 3px 10px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            font-family: var(--mono);
+            border: 1px solid var(--border-strong);
+            color: var(--text);
         }
+
         .registry-path {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 3px 14px;
+            background: var(--code-bg);
+            padding: 4px 12px;
             border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-color);
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            border: 1px solid var(--border);
             display: inline-block;
             margin: 2px 0;
         }
+
+        .tooltip-trigger {
+            border-bottom: 1px dashed var(--text-faint);
+            cursor: help;
+            color: var(--accent-2);
+        }
+
+        /* ===== ЧЕК-ЛИСТ ===== */
         .checklist-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 6px 12px;
-            border-radius: 10px;
-            margin: 3px 0;
+            gap: 14px;
+            padding: 11px 14px;
+            border-radius: var(--radius-sm);
+            margin: 6px 0;
             transition: all 0.2s;
             cursor: pointer;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.92rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
         }
+
         .checklist-item:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--surface-2);
+            border-color: var(--border-strong);
+            transform: translateX(3px);
         }
+
         .checklist-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #bb86fc;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
             cursor: pointer;
             flex-shrink: 0;
-            border-radius: 4px;
         }
+
+        .checklist-item span {
+            color: var(--text-dim);
+        }
+
         .checklist-item.done {
-            opacity: 0.5;
+            opacity: 0.55;
+            background: transparent;
         }
+
         .checklist-item.done span {
             text-decoration: line-through;
-            opacity: 0.6;
+            color: var(--text-faint);
         }
+
         .progress-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            margin: 10px 0;
+            height: 8px;
+            background: var(--surface-2);
+            border-radius: 999px;
+            margin: 14px 0;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
         }
+
         .progress-bar .fill {
             height: 100%;
-            background: var(--accent-gradient);
-            border-radius: 8px;
-            transition: width 0.6s ease;
+            background: var(--grad);
+            border-radius: 999px;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 0 16px rgba(167, 139, 250, 0.5);
         }
-        .tooltip-trigger {
-            border-bottom: 1px dashed #666;
-            cursor: help;
-            opacity: 0.7;
-        }
+
         .checklist-actions {
             display: flex;
             gap: 10px;
             justify-content: flex-end;
-            margin-top: 12px;
+            margin-top: 16px;
         }
+
         .checklist-actions button {
-            background: var(--accent-gradient);
-            color: #000;
+            background: var(--grad);
+            color: #0a0713;
             border: none;
-            padding: 6px 18px;
-            border-radius: 20px;
+            padding: 9px 20px;
+            border-radius: 11px;
+            font-family: var(--sans);
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 12px rgba(187, 134, 252, 0.2);
+            transition: all 0.28s;
+            box-shadow: 0 8px 22px -10px rgba(167, 139, 250, 0.7);
         }
+
+        [data-theme="light"] .checklist-actions button {
+            color: #fff;
+        }
+
         .checklist-actions button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(187, 134, 252, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(167, 139, 250, 0.8);
         }
+
         /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            inset: 0;
             background: var(--modal-overlay);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
         }
+
         .modal-overlay.active {
             display: flex;
         }
+
         .modal-box {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
+            background: var(--surface-strong);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
             max-width: 720px;
             width: 100%;
-            max-height: 80vh;
+            max-height: 82vh;
             overflow-y: auto;
-            border-radius: 20px;
-            padding: 32px 36px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 22px;
+            padding: 34px 38px;
+            border: 1px solid var(--border-strong);
+            box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
             position: relative;
-            animation: modalIn 0.3s ease;
         }
-        [data-theme="light"] .modal-box {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(16px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+
         .modal-box h2 {
-            color: var(--accent-color);
-            margin-bottom: 14px;
-            font-size: 1.5rem;
+            font-family: var(--display);
+            color: var(--text);
+            margin-bottom: 18px;
+            font-size: 1.55rem;
             font-weight: 700;
+            letter-spacing: -0.4px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
         }
+
         .modal-box .close-modal {
             position: absolute;
-            top: 16px;
+            top: 18px;
             right: 22px;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 2rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.4rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
             cursor: pointer;
             line-height: 1;
-            opacity: 0.6;
-            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
         }
+
         .modal-box .close-modal:hover {
-            opacity: 1;
-            color: var(--alert-color);
+            color: #fff;
+            background: var(--alert);
+            border-color: transparent;
             transform: rotate(90deg);
         }
+
         .modal-box p {
             margin-bottom: 12px;
-            font-size: 0.98rem;
-            opacity: 0.95;
+            font-size: 0.96rem;
+            color: var(--text-dim);
         }
+
         .modal-box ul {
             padding-left: 22px;
             margin-bottom: 14px;
+            color: var(--text-dim);
         }
+
         .modal-box ul li {
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
+
+        .modal-box strong {
+            color: var(--text);
+        }
+
         .modal-box a {
-            color: var(--secondary-accent);
+            color: var(--accent-2);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.2s;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
         }
+
         .modal-box a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
+            border-bottom-color: var(--accent-2);
         }
+
         /* ===== КНОПКА НАВЕРХ ===== */
         .go-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--accent-gradient);
-            color: #000;
+            width: 52px;
+            height: 52px;
+            background: var(--grad);
+            color: #0a0713;
             border: none;
-            border-radius: 50%;
-            font-size: 1.6rem;
+            border-radius: 15px;
+            font-size: 1.4rem;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(187, 134, 252, 0.3);
+            box-shadow: 0 14px 34px -10px rgba(167, 139, 250, 0.7);
             transition: all 0.3s;
             opacity: 0;
+            transform: translateY(12px) scale(0.9);
             pointer-events: none;
             z-index: 999;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
+        [data-theme="light"] .go-top {
+            color: #fff;
+        }
+
         .go-top.visible {
             opacity: 1;
+            transform: translateY(0) scale(1);
             pointer-events: auto;
         }
+
         .go-top:hover {
-            transform: scale(1.1) translateY(-4px);
-            box-shadow: 0 8px 32px rgba(187, 134, 252, 0.5);
+            transform: translateY(-4px) scale(1.06);
+            box-shadow: 0 20px 44px -12px rgba(167, 139, 250, 0.85);
         }
+
         /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 1024px) {
-            .sidebar { width: 200px; }
+            .sidebar {
+                width: 210px;
+            }
         }
-        @media (max-width: 768px) {
-            body { padding-top: 100px; }
+
+        @media (max-width: 860px) {
+            body {
+                padding-top: 118px;
+            }
+
             .nav-container {
                 flex-direction: column;
                 height: auto;
-                padding: 10px 0;
-                align-items: stretch;
+                padding: 12px 0;
+                gap: 10px;
             }
-            .logo { text-align: center; margin-right: 0; font-size: 1.2rem; }
+
+            .logo {
+                justify-content: center;
+            }
+
             .nav-tabs {
                 justify-content: center;
-                gap: 4px;
-                margin-top: 6px;
-                flex-wrap: wrap;
-            }
-            .tab-btn { font-size: 0.7rem; padding: 4px 10px; }
-            .search-wrapper {
-                width: 100%;
-                margin-top: 6px;
-            }
-            .search-input {
-                width: 100%;
-                flex: 1;
-            }
-            .search-input:focus {
                 width: 100%;
             }
-            .main-container { flex-direction: column; padding: 12px; gap: 14px; }
-            .sidebar { width: 100%; position: static; padding: 14px; max-height: 200px; }
-            .tool-grid { grid-template-columns: 1fr; }
-            pre { flex-direction: column; align-items: stretch; }
-            .copy-btn { align-self: flex-start; }
-            h1 { font-size: 1.3rem; }
-            .card { padding: 14px 16px; }
-            .modal-box { padding: 24px 20px; }
-            .go-top { width: 44px; height: 44px; font-size: 1.3rem; bottom: 16px; right: 16px; }
+
+            .main-container {
+                flex-direction: column;
+                padding: 22px 16px 70px;
+                gap: 18px;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: 220px;
+            }
+
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+
+            pre {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .copy-btn {
+                align-self: flex-start;
+                margin-left: 0;
+            }
+
+            .modal-box {
+                padding: 26px 22px;
+            }
+
+            .go-top {
+                width: 46px;
+                height: 46px;
+                font-size: 1.2rem;
+                bottom: 18px;
+                right: 18px;
+            }
         }
+
         @media (max-width: 480px) {
-            .tab-btn { font-size: 0.6rem; padding: 3px 8px; }
-            .logo { font-size: 1rem; }
+            .tab-btn {
+                font-size: 0.74rem;
+                padding: 6px 11px;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .card {
+                padding: 18px 18px;
+            }
+
+            .card .tool-details-btn {
+                float: none;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
+
+        /* ===== ОПТИМИЗАЦИЯ ДВИЖЕНИЯ И ОТРИСОВКИ =====
+           Стеклянная эстетика сохранена на ключевых поверхностях, а постоянные
+           и каскадные анимации отключены, чтобы снизить нагрузку на GPU. */
+        :root {
+            --blur: blur(12px) saturate(125%);
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        body,
+        .bg-aurora {
+            transition: none;
+        }
+
+        .bg-aurora {
+            filter: none;
+        }
+
+        /* Карточек на странице много: стекло создаётся прозрачностью,
+           границей и бликом без отдельного blur-слоя на каждой карточке. */
+        .card {
+            background: linear-gradient(145deg, var(--surface-2), var(--surface));
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+            animation: none;
+            opacity: 1;
+            transform: none;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: auto 260px;
+        }
+
+        .card::before {
+            transition: opacity 0.15s ease;
+        }
+
+        .card:hover {
+            transform: none;
+            box-shadow: var(--shadow-sm);
+            border-color: var(--border-strong);
+        }
+
+        .card:nth-child(n),
+        .tab-content.active,
+        .modal-overlay.active,
+        .modal-box {
+            animation: none;
+        }
+
+        .tab-btn,
+        .sidebar-list a,
+        .card .tool-details-btn,
+        .copy-btn,
+        .checklist-item,
+        .checklist-actions button,
+        .modal-box .close-modal {
+            transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+        }
+
+        .card .tool-details-btn:hover::after,
+        .sidebar-list a:hover,
+        .checklist-actions button:hover,
+        .modal-box .close-modal:hover {
+            transform: none;
+        }
+
+        .progress-bar .fill {
+            transition: none;
+            box-shadow: none;
+        }
+
+        .go-top {
+            transition: opacity 0.15s ease;
+            transform: none;
+        }
+
+        .go-top.visible,
+        .go-top:hover {
+            transform: none;
+        }
+
+        @media (max-width: 860px) {
+            /* На мобильных оставляем стекло в навигации, но уменьшаем blur. */
+            :root {
+                --blur: blur(9px) saturate(118%);
+            }
+
+            /* Многострочная фиксированная навигация не перекрывает контент. */
+            body {
+                padding-top: 230px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.05ms !important;
+            }
         }
     </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
+
 <body>
+    <div class="bg-aurora" aria-hidden="true"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
     <div class="navbar">
         <div class="nav-container">
-            <div class="logo">🎯 CS2 CHECK</div>
+            <div class="logo">🎯 <span class="mark">CS2&nbsp;CHECK</span></div>
             <div class="nav-tabs">
                 <button class="tab-btn active" data-tab="overview">📋 Общий</button>
                 <button class="tab-btn" data-tab="tier3">🟢 TIER 3</button>
@@ -746,7 +1241,8 @@
                 <div class="card" id="basics">
                     <h3>Основные положения</h3>
                     <ol style="padding-left: 22px;">
-                        <li>Скачиваем все программы <strong>только с официальных сайтов</strong>. Не предлагайте свои версии.</li>
+                        <li>Скачиваем все программы <strong>только с официальных сайтов</strong>. Не предлагайте свои
+                            версии.</li>
                         <li>Создайте отдельную папку для инструментов проверки.</li>
                         <li>Игнорируйте скрытый рабочий стол и доп. мониторы. Работайте только с основным.</li>
                     </ol>
@@ -761,12 +1257,13 @@
                 </div>
                 <div class="alert">
                     <strong>Правило выдачи наказания:</strong><br>
-                    Чит должен быть либо запущен в течение последних 3 месяцев, либо храниться на ПК. Достаточно признания или характерных признаков (размер, цифровая подпись, троллинг папка и т.д.).
+                    Чит должен быть либо запущен в течение последних 3 месяцев, либо храниться на ПК. Достаточно
+                    признания или характерных признаков (размер, цифровая подпись, троллинг папка и т.д.).
                 </div>
                 <div class="card">
                     <h3>Если нашли подозрительный запуск, но файл отсутствует</h3>
                     <p>1. Ищите по названию в <strong>Everything</strong>.<br>
-                       2. Если не нашли — <strong>JournalTrace</strong> и ищите действия с этим файлом.</p>
+                        2. Если не нашли — <strong>JournalTrace</strong> и ищите действия с этим файлом.</p>
                 </div>
             </div>
 
@@ -785,7 +1282,8 @@
                 </div>
                 <div class="card">
                     <h3>Места для быстрой проверки</h3>
-                    <p><strong>Загрузки, C:\, AppData, Program Files,</strong> папки игры CS2 (на Lua-скрипты, подозрительные DLL и .exe).</p>
+                    <p><strong>Загрузки, C:\, AppData, Program Files,</strong> папки игры CS2 (на Lua-скрипты,
+                        подозрительные DLL и .exe).</p>
                     <div class="method-card tier3">
                         <strong>Типичные пути:</strong><br>
                         <code>C:\Users\%USERNAME%\AppData\</code><br>
@@ -795,9 +1293,11 @@
                 </div>
                 <div class="card" id="everything">
                     <h3>🔍 Everything</h3>
-                    <p>Быстрый поиск по файловой системе. <span class="tooltip-trigger" title="Индексирует все файлы за секунды">ⓘ</span></p>
+                    <p>Быстрый поиск по файловой системе. <span class="tooltip-trigger"
+                            title="Индексирует все файлы за секунды">ⓘ</span></p>
                     <pre><code>ext:.exe|ext:.dll</code> <button class="copy-btn" data-copy="ext:.exe|ext:.dll">Копировать</button></pre>
-                    <p>ПКМ по колонкам → <strong>Data Accessed (дата изменения)</strong> → сортировка по дате доступа.</p>
+                    <p>ПКМ по колонкам → <strong>Data Accessed (дата изменения)</strong> → сортировка по дате доступа.
+                    </p>
                     <p><span class="keyboard-shortcut">Ctrl+F</span> — быстрый поиск в текущей папке</p>
                 </div>
                 <div class="card" id="journal">
@@ -817,7 +1317,8 @@
                     </ul>
                     <div class="alert">
                         <strong>Удаление через Корзину:</strong><br>
-                        Файлы попадают в <code>C:\$Recycle.Bin</code> и переименовываются ($Rxxxxxx). Ищите файлы, начинающиеся на <code>$</code>.
+                        Файлы попадают в <code>C:\$Recycle.Bin</code> и переименовываются ($Rxxxxxx). Ищите файлы,
+                        начинающиеся на <code>$</code>.
                     </div>
                     <h4>Поиск замены файлов</h4>
                     <ul style="padding-left:22px;" start="5">
@@ -846,7 +1347,8 @@
                 </div>
                 <div class="card" id="sysinf">
                     <h3>🖥️ System Informer</h3>
-                    <p><strong>Установка:</strong> Включите "Enable kernel-mode driver" в System → Options. При ошибке — Help → Check for Updates → Canary.</p>
+                    <p><strong>Установка:</strong> Включите "Enable kernel-mode driver" в System → Options. При ошибке —
+                        Help → Check for Updates → Canary.</p>
                     <h4>Поиск файлов</h4>
                     <ol style="padding-left:22px;">
                         <li>Нажмите сочетание клавиш <code>ctrl + f</code></li>
@@ -862,7 +1364,8 @@
                         <li>Завершить все процессы античитов</li>
                         <li>Search Processes -> csrss.exe</li>
                         <li>Выбираем один из двух процессов в зависимости от нужды</li>
-                        <li>Properties -> Options -> Strings -> Отмечаем все галочки + ставим минимальную длину 4 -> Filter -> RegEx (case-insensitive) -> Вставляем текст</li>
+                        <li>Properties -> Options -> Strings -> Отмечаем все галочки + ставим минимальную длину 4 ->
+                            Filter -> RegEx (case-insensitive) -> Вставляем текст</li>
                     </ol>
                 </div>
                 <div class="card">
@@ -873,13 +1376,20 @@
                 </div>
                 <div class="card">
                     <h3>🔍 Проверка реестра</h3>
-                    <p><code>Компьютер\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\State\UserSettings</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched</code></p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache</code></p>
+                    <p><code>Компьютер\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\State\UserSettings</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched</code>
+                    </p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache</code>
+                    </p>
                     <p><code></code></p>
                     <p>Ищите ключи с подозрительными названиями (cheat, hack, injector).</p>
                 </div>
@@ -898,53 +1408,65 @@
                 <h1>🔧 Инструменты</h1>
                 <div class="tool-grid">
                     <div class="card">
-                        <h3><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank" rel="noopener noreferrer">SSTool</a></h3>
+                        <h3><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank"
+                                rel="noopener noreferrer">SSTool</a></h3>
                         <p>Просмотр структуры диска, скрытых записей MFT и альтернативных потоков данных.</p>
                         <button class="tool-details-btn" data-tool="sstool">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">BAM Parser</a></h3>
+                        <h3><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">BAM
+                                Parser</a></h3>
                         <p>Парсер журналов Background Activity Moderator для анализа недавних запусков приложений.</p>
                         <button class="tool-details-btn" data-tool="bam">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://systeminformer.sourceforge.io/canary" target="_blank" rel="noopener noreferrer">System Informer</a></h3>
+                        <h3><a href="https://systeminformer.sourceforge.io/canary" target="_blank"
+                                rel="noopener noreferrer">System Informer</a></h3>
                         <p>Продвинутый диспетчер задач с анализом памяти процессов и строк (kernel-mode driver).</p>
                         <button class="tool-details-btn" data-tool="sysinformer">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank" rel="noopener noreferrer">PrefetchView++</a></h3>
+                        <h3><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank"
+                                rel="noopener noreferrer">PrefetchView++</a></h3>
                         <p>Детальный просмотр файлов Prefetch (.pf) с сортировкой по времени и частоте запуска.</p>
                         <button class="tool-details-btn" data-tool="prefetchview">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank" rel="noopener noreferrer">UserAssistsView</a></h3>
+                        <h3><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank"
+                                rel="noopener noreferrer">UserAssistsView</a></h3>
                         <p>Анализ записей UserAssist в реестре — история запуска программ в оболочке Windows.</p>
                         <button class="tool-details-btn" data-tool="userassist">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank" rel="noopener noreferrer">WinPrefetchView</a></h3>
+                        <h3><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank"
+                                rel="noopener noreferrer">WinPrefetchView</a></h3>
                         <p>Расширенный просмотр Prefetch с поддержкой группировки и экспорта данных.</p>
                         <button class="tool-details-btn" data-tool="winprefetch">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank" rel="noopener noreferrer">Journal Trace</a></h3>
-                        <p>Анализ изменений в файловой системе (удаления, переименования, создание) через USN Journal.</p>
+                        <h3><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank"
+                                rel="noopener noreferrer">Journal Trace</a></h3>
+                        <p>Анализ изменений в файловой системе (удаления, переименования, создание) через USN Journal.
+                        </p>
                         <button class="tool-details-btn" data-tool="journaltrace">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php" target="_blank" rel="noopener noreferrer">ShellBagAnalyzer</a></h3>
+                        <h3><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php"
+                                target="_blank" rel="noopener noreferrer">ShellBagAnalyzer</a></h3>
                         <p>Парсер ShellBag для восстановления истории открытия папок и доступа к файлам.</p>
                         <button class="tool-details-btn" data-tool="shellbag">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://www.voidtools.com/everything-1.5a/" target="_blank" rel="noopener noreferrer">Everything</a></h3>
+                        <h3><a href="https://www.voidtools.com/everything-1.5a/" target="_blank"
+                                rel="noopener noreferrer">Everything</a></h3>
                         <p>Мгновенный поиск файлов по имени и расширению с индексацией всей файловой системы.</p>
                         <button class="tool-details-btn" data-tool="everything">Подробнее</button>
                     </div>
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank" rel="noopener noreferrer">LastActivityView</a></h3>
-                        <p>Сводная таблица последних действий пользователя: запуски, открытия файлов, установки и др.</p>
+                        <h3><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank"
+                                rel="noopener noreferrer">LastActivityView</a></h3>
+                        <p>Сводная таблица последних действий пользователя: запуски, открытия файлов, установки и др.
+                        </p>
                         <button class="tool-details-btn" data-tool="lastactivity">Подробнее</button>
                     </div>
                 </div>
@@ -963,18 +1485,25 @@
                 </div>
                 <div class="card">
                     <h3>🧠 Анализ CSRSS (csrss.exe)</h3>
-                    <p><strong>csrss.exe</strong> — системный процесс Windows (Client Server Runtime Subsystem). Он логирует все возможные запуски программ в текущей сессии. Анализ его памяти позволяет обнаружить следы исполнения .exe и .dll файлов, даже если сами файлы уже удалены.</p>
+                    <p><strong>csrss.exe</strong> — системный процесс Windows (Client Server Runtime Subsystem). Он
+                        логирует все возможные запуски программ в текущей сессии. Анализ его памяти позволяет обнаружить
+                        следы исполнения .exe и .dll файлов, даже если сами файлы уже удалены.</p>
                     <h4>🔹 Анализ для .exe файлов</h4>
                     <ol style="padding-left:22px;">
-                        <li>В System Informer выберите процесс <code>csrss.exe</code> с <strong>меньшим</strong> размером в байтах.</li>
-                        <li>Примените фильтр по regex'у: <pre><code>^[A-Z]:\\.+\.(exe)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(exe)$">Копировать</button></pre></li>
+                        <li>В System Informer выберите процесс <code>csrss.exe</code> с <strong>меньшим</strong>
+                            размером в байтах.</li>
+                        <li>Примените фильтр по regex'у:
+                            <pre><code>^[A-Z]:\\.+\.(exe)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(exe)$">Копировать</button></pre>
+                        </li>
                         <li>Создайте папку с любым удобным названием и сохраните дамп найденных строк.</li>
                         <li>Проанализируйте полученные данные с помощью <strong>Paths Parser</strong>.</li>
                     </ol>
                     <h4>🔹 Анализ для .dll файлов</h4>
                     <ol style="padding-left:22px;">
                         <li>Выберите процесс <code>csrss.exe</code> с <strong>большим</strong> размером в байтах.</li>
-                        <li>Примените фильтр по regex'у: <pre><code>^[A-Z]:\\.+\.(dll)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(dll)$">Копировать</button></pre></li>
+                        <li>Примените фильтр по regex'у:
+                            <pre><code>^[A-Z]:\\.+\.(dll)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(dll)$">Копировать</button></pre>
+                        </li>
                         <li>Сохраните дамп и проанализируйте через Paths Parser.</li>
                     </ol>
                     <h4>🔹 Обнаружение .dll и .exe одновременно</h4>
@@ -991,8 +1520,11 @@
                 <h1>✅ Чек-лист проверки</h1>
                 <div class="card">
                     <p>Отмечайте выполненные пункты. Прогресс сохраняется.</p>
-                    <div class="progress-bar"><div class="fill" id="checklistProgress" style="width:0%"></div></div>
-                    <div id="checklistStats" style="text-align:right;font-size:0.8rem;opacity:0.6;margin-top:4px;"></div>
+                    <div class="progress-bar">
+                        <div class="fill" id="checklistProgress" style="width:0%"></div>
+                    </div>
+                    <div id="checklistStats" style="text-align:right;font-size:0.8rem;opacity:0.6;margin-top:4px;">
+                    </div>
                     <div id="checklistContainer"></div>
                     <div class="checklist-actions">
                         <button id="exportChecklistBtn">📤 Экспорт чек-листа</button>
@@ -1014,7 +1546,7 @@
                 <div class="card">
                     <h3>Частые ошибки</h3>
                     <ul style="padding-left:22px;">
-                        <li>❌ Пропуск скрытых папок 
+                        <li>❌ Пропуск скрытых папок
                         <li>❌ Игнорирование даты доступа в Everything</li>
                         <li>❌ Неправильная настройка System Informer Canary</li>
                         <li>❌ Забывают проверить корзину и <code>$Recycle.Bin</code></li>
@@ -1027,9 +1559,12 @@
                 <div class="card">
                     <h3>Инструменты удалённого доступа</h3>
                     <ul style="padding-left:22px;">
-                        <li><a href="https://www.dwservice.net/ru/home.html" target="_blank" rel="noopener noreferrer" style="color:var(--secondary-accent);">Dwservice</a></li>
-                        <li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer" style="color:var(--secondary-accent);">AnyDesk</a></li>
-                        <li><a href="https://github.com/rustdesk/rustdesk" target="_blank" rel="noopener noreferrer" style="color:var(--secondary-accent);">RustDesk</a></li>
+                        <li><a href="https://www.dwservice.net/ru/home.html" target="_blank" rel="noopener noreferrer"
+                                style="color:var(--secondary-accent);">Dwservice</a></li>
+                        <li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer"
+                                style="color:var(--secondary-accent);">AnyDesk</a></li>
+                        <li><a href="https://github.com/rustdesk/rustdesk" target="_blank" rel="noopener noreferrer"
+                                style="color:var(--secondary-accent);">RustDesk</a></li>
                     </ul>
                 </div>
             </div>
@@ -1039,36 +1574,53 @@
                 <div class="card">
                     <h3>📁 Файловая система</h3>
                     <ul style="padding-left:22px;">
-                        <li>🔴 Файлы с названиями, содержащими <code>cheat</code>, <code>hack</code>, <code>aim</code>, <code>wall</code>, <code>inject</code>.</li>
-                        <li>🔴 Странные файлы с расширениями <code>.exe</code> или <code>.dll</code>, расположенные в <code>Temp</code>, <code>AppData\Local\Temp</code>, <code>C:\Users\Public</code>.</li>
-                        <li>🔴 Наличие упаковщиков (UPX, VMProtect) в исполняемых файлах (можно проверить через PE-bear или Detect It Easy).</li>
-                        <li>🔴 Файлы с поддельными цифровыми подписями (подпись присутствует, но недействительна или выдана неизвестным издателем).</li>
-                        <li>🔴 Конфигурационные файлы читов (<code>.cfg</code>, <code>.ini</code>, <code>.json</code>) с подозрительными названиями.</li>
+                        <li>🔴 Файлы с названиями, содержащими <code>cheat</code>, <code>hack</code>, <code>aim</code>,
+                            <code>wall</code>, <code>inject</code>.
+                        </li>
+                        <li>🔴 Странные файлы с расширениями <code>.exe</code> или <code>.dll</code>, расположенные в
+                            <code>Temp</code>, <code>AppData\Local\Temp</code>, <code>C:\Users\Public</code>.
+                        </li>
+                        <li>🔴 Наличие упаковщиков (UPX, VMProtect) в исполняемых файлах (можно проверить через PE-bear
+                            или Detect It Easy).</li>
+                        <li>🔴 Файлы с поддельными цифровыми подписями (подпись присутствует, но недействительна или
+                            выдана неизвестным издателем).</li>
+                        <li>🔴 Конфигурационные файлы читов (<code>.cfg</code>, <code>.ini</code>, <code>.json</code>) с
+                            подозрительными названиями.</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>🧠 Память и процессы</h3>
                     <ul style="padding-left:22px;">
-                        <li>🔴 Процессы с нестандартными именами, например <code>csgo.exe</code> в папке <code>AppData</code>.</li>
-                        <li>🔴 Процессы, запущенные из папок без прав на запись (например, <code>System32</code>) с подозрительными именами.</li>
+                        <li>🔴 Процессы с нестандартными именами, например <code>csgo.exe</code> в папке
+                            <code>AppData</code>.
+                        </li>
+                        <li>🔴 Процессы, запущенные из папок без прав на запись (например, <code>System32</code>) с
+                            подозрительными именами.</li>
                         <li>🔴 В памяти csrss.exe найдены пути к .exe или .dll, которые не являются системными.</li>
-                        <li>🔴 В памяти игрового процесса (cs2.exe) обнаружены строки с названиями читов или URL-адресами для связи с сервером читов.</li>
+                        <li>🔴 В памяти игрового процесса (cs2.exe) обнаружены строки с названиями читов или
+                            URL-адресами для связи с сервером читов.</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>📜 Логи и артефакты</h3>
                     <ul style="padding-left:22px;">
-                        <li>🔴 В JournalTrace зафиксированы массовые удаления .exe или .dll сразу после запуска CS2.</li>
-                        <li>🔴 В Prefetch есть записи о запуске подозрительных .exe, которые сейчас отсутствуют на диске.</li>
-                        <li>🔴 В реестре есть ключи с именами читов (например, <code>Software\Aimware</code>, <code>Software\Vape</code>).</li>
-                        <li>🔴 В ShellBag есть посещённые папки, ведущие на сайты с читами или на папки с названиями типа <code>cheats</code>, <code>injects</code>.</li>
+                        <li>🔴 В JournalTrace зафиксированы массовые удаления .exe или .dll сразу после запуска CS2.
+                        </li>
+                        <li>🔴 В Prefetch есть записи о запуске подозрительных .exe, которые сейчас отсутствуют на
+                            диске.</li>
+                        <li>🔴 В реестре есть ключи с именами читов (например, <code>Software\Aimware</code>,
+                            <code>Software\Vape</code>).
+                        </li>
+                        <li>🔴 В ShellBag есть посещённые папки, ведущие на сайты с читами или на папки с названиями
+                            типа <code>cheats</code>, <code>injects</code>.</li>
                         <li>🔴 В BAM Parser есть записи о запуске файлов, которые уже удалены с диска.</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3>🌐 Сеть</h3>
                     <ul style="padding-left:22px;">
-                        <li>🔴 Активные сетевые соединения на нестандартные порты (например, 27015, 27016 — игровые, но если есть на 4444, 1337, 5555 — подозрительно).</li>
+                        <li>🔴 Активные сетевые соединения на нестандартные порты (например, 27015, 27016 — игровые, но
+                            если есть на 4444, 1337, 5555 — подозрительно).</li>
                         <li>🔴 Наличие в памяти строк с IP-адресами, не относящимися к игровым серверам.</li>
                     </ul>
                 </div>
@@ -1079,47 +1631,62 @@
                 <h1>📖 Глоссарий терминов</h1>
                 <div class="card">
                     <h3>🔹 USN Journal (Update Sequence Number Journal)</h3>
-                    <p>Журнал изменений файловой системы NTFS. Фиксирует все изменения (создание, удаление, переименование, изменение атрибутов). Используется для восстановления истории файлов даже после их удаления.</p>
+                    <p>Журнал изменений файловой системы NTFS. Фиксирует все изменения (создание, удаление,
+                        переименование, изменение атрибутов). Используется для восстановления истории файлов даже после
+                        их удаления.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 MFT (Master File Table)</h3>
-                    <p>Главная таблица файлов в NTFS. Содержит метаданные каждого файла и папки на томе. Анализ MFT позволяет находить скрытые или удалённые записи.</p>
+                    <p>Главная таблица файлов в NTFS. Содержит метаданные каждого файла и папки на томе. Анализ MFT
+                        позволяет находить скрытые или удалённые записи.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 ShellBags</h3>
-                    <p>Записи в реестре Windows, хранящие историю открытия папок через проводник (размер окна, положение, представление). Могут сохранять информацию о папках, которые уже удалены.</p>
+                    <p>Записи в реестре Windows, хранящие историю открытия папок через проводник (размер окна,
+                        положение, представление). Могут сохранять информацию о папках, которые уже удалены.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 Prefetch</h3>
-                    <p>Механизм Windows для ускорения загрузки приложений. Хранит информацию о запущенных .exe (путь, количество запусков, дата, загруженные модули). Находится в <code>C:\Windows\Prefetch\*.pf</code>.</p>
+                    <p>Механизм Windows для ускорения загрузки приложений. Хранит информацию о запущенных .exe (путь,
+                        количество запусков, дата, загруженные модули). Находится в
+                        <code>C:\Windows\Prefetch\*.pf</code>.
+                    </p>
                 </div>
                 <div class="card">
                     <h3>🔹 BAM (Background Activity Moderator)</h3>
-                    <p>Артефакт реестра (HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings). Хранит время последнего запуска каждого .exe, даже если файл уже удалён.</p>
+                    <p>Артефакт реестра (HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings). Хранит
+                        время последнего запуска каждого .exe, даже если файл уже удалён.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 CSRSS (Client Server Runtime Subsystem)</h3>
-                    <p>Системный процесс Windows, отвечающий за управление консольными окнами и завершением процессов. В его памяти могут оставаться строки с путями к запущенным приложениям.</p>
+                    <p>Системный процесс Windows, отвечающий за управление консольными окнами и завершением процессов. В
+                        его памяти могут оставаться строки с путями к запущенным приложениям.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 Инжект (Code Injection)</h3>
-                    <p>Внедрение кода (обычно DLL) в адресное пространство другого процесса. Читы часто используют инжект для модификации игровой памяти.</p>
+                    <p>Внедрение кода (обычно DLL) в адресное пространство другого процесса. Читы часто используют
+                        инжект для модификации игровой памяти.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 Спуфинг (Spoofing)</h3>
-                    <p>Подмена аппаратных идентификаторов (HWID) с целью обхода банов. Читеры используют специальные утилиты для изменения серийных номеров дисков, MAC-адресов и т.д.</p>
+                    <p>Подмена аппаратных идентификаторов (HWID) с целью обхода банов. Читеры используют специальные
+                        утилиты для изменения серийных номеров дисков, MAC-адресов и т.д.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 DMA (Direct Memory Access)</h3>
-                    <p>Прямой доступ к памяти, используемый в аппаратных читах (например, на основе FPGA). Позволяет читать память компьютера без использования ПО, что затрудняет детекцию.</p>
+                    <p>Прямой доступ к памяти, используемый в аппаратных читах (например, на основе FPGA). Позволяет
+                        читать память компьютера без использования ПО, что затрудняет детекцию.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 PE-файл (Portable Executable)</h3>
-                    <p>Формат исполняемых файлов в Windows (.exe, .dll, .sys). Содержит заголовки, секции кода и данных, таблицы импорта/экспорта.</p>
+                    <p>Формат исполняемых файлов в Windows (.exe, .dll, .sys). Содержит заголовки, секции кода и данных,
+                        таблицы импорта/экспорта.</p>
                 </div>
                 <div class="card">
                     <h3>🔹 Цифровая подпись</h3>
-                    <p>Электронная метка, подтверждающая авторство и целостность файла. Проверяется через сертификаты (например, от Microsoft, Valve). Подозрительно, если подпись отсутствует, недействительна или выдана неизвестным издателем.</p>
+                    <p>Электронная метка, подтверждающая авторство и целостность файла. Проверяется через сертификаты
+                        (например, от Microsoft, Valve). Подозрительно, если подпись отсутствует, недействительна или
+                        выдана неизвестным издателем.</p>
                 </div>
             </div>
         </div>
@@ -1298,7 +1865,7 @@
             goTopBtn.classList.toggle('visible', window.scrollY > 300);
         });
         goTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'auto' });
         });
 
         // ===== ОГЛАВЛЕНИЕ =====
@@ -1319,7 +1886,7 @@
 
         // ===== ВКЛАДКИ =====
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const target = this.dataset.tab;
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
@@ -1454,7 +2021,7 @@
             'Фиксация доказательств (скриншоты, логи)'
         ];
         let saved = {};
-        try { saved = JSON.parse(localStorage.getItem('cs2_checklist')) || {}; } catch {}
+        try { saved = JSON.parse(localStorage.getItem('cs2_checklist')) || {}; } catch { }
 
         function renderChecklist() {
             let html = '';
@@ -1507,7 +2074,7 @@
             const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `checklist_${new Date().toISOString().slice(0,10)}.txt`;
+            link.download = `checklist_${new Date().toISOString().slice(0, 10)}.txt`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1519,9 +2086,10 @@
 
         function scrollToSection(id) {
             const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            if (el) el.scrollIntoView({ behavior: 'auto' });
         }
         window.scrollToSection = scrollToSection;
     </script>
 </body>
+
 </html> 
