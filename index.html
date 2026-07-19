@@ -1,72 +1,83 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Правила проверки CS2 — Полный гайд</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS2 Check — Полный гайд по проверке на читы</title>
+
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
     <style>
-        /* ===== ПЕРЕМЕННЫЕ / ТОКЕНЫ ===== */
+        /* ============================================================
+           ПЕРЕМЕННЫЕ / ТЕМЫ
+           ============================================================ */
         :root {
             --bg: #07070c;
             --bg-2: #0b0b13;
-            --surface: rgba(255, 255, 255, 0.028);
-            --surface-2: rgba(255, 255, 255, 0.045);
-            --surface-strong: rgba(20, 20, 30, 0.72);
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-2: rgba(255, 255, 255, 0.07);
+            --surface-strong: rgba(12, 12, 22, 0.78);
             --text: #edecf5;
             --text-dim: #a8a6bd;
             --text-faint: #6f6d85;
             --accent: #a78bfa;
             --accent-2: #22d3ee;
             --accent-3: #f472b6;
-            --secondary-accent: #22d3ee;
-            --grad: linear-gradient(120deg, #a78bfa 0%, #7c9dfc 45%, #22d3ee 100%);
-            --grad-soft: linear-gradient(120deg, rgba(167, 139, 250, 0.18), rgba(34, 211, 238, 0.14));
-            --border: rgba(255, 255, 255, 0.08);
-            --border-strong: rgba(255, 255, 255, 0.14);
+            --grad: linear-gradient(135deg, #a78bfa 0%, #7c9dfc 45%, #22d3ee 100%);
+            --border: rgba(255, 255, 255, 0.07);
+            --border-strong: rgba(255, 255, 255, 0.13);
             --alert: #fb7185;
             --ok: #34d399;
             --warn: #fbbf24;
-            --code-bg: rgba(4, 4, 9, 0.65);
-            --modal-overlay: rgba(4, 4, 10, 0.66);
-            --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
-            --shadow-sm: 0 8px 24px -12px rgba(0, 0, 0, 0.65);
-            --blur: blur(18px) saturate(140%);
+            --code-bg: rgba(4, 4, 12, 0.60);
+            --modal-overlay: rgba(4, 4, 12, 0.70);
+            --shadow: 0 28px 64px -20px rgba(0, 0, 0, 0.80);
+            --shadow-sm: 0 10px 28px -14px rgba(0, 0, 0, 0.60);
+            --blur: blur(16px) saturate(150%);
             --radius: 18px;
             --radius-sm: 12px;
-            --ring: 0 0 0 3px rgba(167, 139, 250, 0.22);
+            --ring: 0 0 0 3px rgba(167, 139, 250, 0.25);
             --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
             --display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
             --mono: 'JetBrains Mono', 'SFMono-Regular', 'Consolas', monospace;
+            --nav-h: 64px;
+            --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         [data-theme="light"] {
             --bg: #eef0f7;
-            --bg-2: #e6e8f2;
-            --surface: rgba(255, 255, 255, 0.72);
-            --surface-2: rgba(255, 255, 255, 0.9);
-            --surface-strong: rgba(255, 255, 255, 0.86);
+            --bg-2: #e2e4ef;
+            --surface: rgba(255, 255, 255, 0.70);
+            --surface-2: rgba(255, 255, 255, 0.90);
+            --surface-strong: rgba(255, 255, 255, 0.84);
             --text: #16151f;
             --text-dim: #4c4a5e;
             --text-faint: #86849a;
-            --border: rgba(20, 16, 40, 0.1);
-            --border-strong: rgba(20, 16, 40, 0.18);
-            --code-bg: rgba(15, 15, 30, 0.06);
-            --modal-overlay: rgba(30, 28, 50, 0.32);
-            --shadow: 0 24px 60px -24px rgba(60, 50, 110, 0.28);
-            --shadow-sm: 0 10px 26px -16px rgba(60, 50, 110, 0.25);
+            --border: rgba(20, 16, 44, 0.08);
+            --border-strong: rgba(20, 16, 44, 0.16);
             --code-bg: rgba(15, 15, 35, 0.05);
+            --modal-overlay: rgba(30, 28, 55, 0.30);
+            --shadow: 0 28px 64px -24px rgba(60, 50, 120, 0.25);
+            --shadow-sm: 0 12px 28px -16px rgba(60, 50, 120, 0.20);
+            --surface-strong: rgba(255, 255, 255, 0.86);
         }
 
-        /* ===== БАЗА ===== */
-        * {
+        /* ============================================================
+           БАЗА
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         html {
-            scroll-behavior: auto;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -74,28 +85,30 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.65;
-            padding-top: 74px;
+            padding-top: var(--nav-h);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
             letter-spacing: 0.1px;
             overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
         }
 
-        /* Декоративный фон (aurora) */
+        /* ===== ФОНЫ ===== */
         .bg-aurora {
             position: fixed;
             inset: 0;
             z-index: -2;
             pointer-events: none;
             background:
-                radial-gradient(48rem 48rem at 12% -8%, rgba(124, 58, 237, 0.22), transparent 60%),
-                radial-gradient(42rem 42rem at 108% 12%, rgba(34, 211, 238, 0.16), transparent 55%),
-                radial-gradient(46rem 46rem at 50% 118%, rgba(244, 114, 182, 0.12), transparent 60%);
+                radial-gradient(52rem 52rem at 10% -6%, rgba(124, 58, 237, 0.20), transparent 58%),
+                radial-gradient(44rem 44rem at 110% 10%, rgba(34, 211, 238, 0.14), transparent 52%),
+                radial-gradient(48rem 48rem at 50% 120%, rgba(244, 114, 182, 0.10), transparent 58%);
+            transition: opacity var(--transition);
         }
 
         [data-theme="light"] .bg-aurora {
-            opacity: 0.55;
+            opacity: 0.50;
         }
 
         .bg-grid {
@@ -104,11 +117,11 @@
             z-index: -1;
             pointer-events: none;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-            background-size: 46px 46px;
-            mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 20%, transparent 75%);
-            -webkit-mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 20%, transparent 75%);
+                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 18%, transparent 72%);
+            -webkit-mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 18%, transparent 72%);
         }
 
         [data-theme="light"] .bg-grid {
@@ -123,27 +136,26 @@
         }
 
         ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
         }
-
         ::-webkit-scrollbar-track {
             background: transparent;
         }
-
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(var(--accent), var(--accent-2));
             border-radius: 20px;
             border: 2px solid transparent;
             background-clip: padding-box;
         }
-
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(var(--accent-2), var(--accent));
             background-clip: padding-box;
         }
 
-        /* ===== НАВБАР ===== */
+        /* ============================================================
+           НАВБАР
+           ============================================================ */
         .navbar {
             position: fixed;
             top: 0;
@@ -154,18 +166,21 @@
             -webkit-backdrop-filter: var(--blur);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
-            padding: 0 20px;
-            transition: background 0.3s, border-color 0.3s;
+            padding: 0 16px;
+            transition: background var(--transition), border-color var(--transition);
+            height: var(--nav-h);
+            display: flex;
+            align-items: center;
         }
 
         .navbar::after {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             right: 0;
             bottom: -1px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), rgba(34, 211, 238, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.50), rgba(34, 211, 238, 0.35), transparent);
             opacity: 0.6;
         }
 
@@ -175,62 +190,81 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 74px;
-            gap: 14px;
+            width: 100%;
+            gap: 12px;
         }
 
         .logo {
             font-family: var(--display);
-            font-size: 1.32rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
 
-        .logo span.mark {
+        .logo .mark {
             background: var(--grad);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .nav-tabs {
+        /* ===== ВКЛАДКИ с горизонтальным скроллом ===== */
+        .tabs-wrapper {
+            flex: 1 1 auto;
             display: flex;
-            gap: 6px;
             align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+            overflow-x: auto;
+            overflow-y: hidden;
+            gap: 4px;
+            padding: 4px 0;
+            scrollbar-width: thin;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 8px;
+        }
+        .tabs-wrapper::-webkit-scrollbar {
+            height: 3px;
+        }
+        .tabs-wrapper::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        .tabs-wrapper::-webkit-scrollbar-track {
+            background: transparent;
         }
 
         .tab-btn {
-            padding: 8px 15px;
+            padding: 4px 10px;
             background: transparent;
             color: var(--text-dim);
             border: 1px solid transparent;
-            border-radius: 11px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: var(--sans);
             font-weight: 500;
-            font-size: 0.82rem;
-            transition: all 0.22s ease;
+            font-size: 0.68rem;
+            transition: all var(--transition);
             white-space: nowrap;
+            flex-shrink: 0;
+            letter-spacing: 0.2px;
         }
 
         .tab-btn:hover {
             color: var(--text);
             background: var(--surface-2);
             border-color: var(--border);
-            transform: translateY(-1px);
         }
 
         .tab-btn.active {
             color: #0a0713;
             background: var(--grad);
             border-color: transparent;
-            box-shadow: 0 6px 20px -6px rgba(167, 139, 250, 0.6);
+            box-shadow: 0 4px 14px -6px rgba(167, 139, 250, 0.50);
             font-weight: 600;
         }
 
@@ -238,37 +272,23 @@
             color: #fff;
         }
 
-        .theme-toggle {
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 1.05rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            transition: all 0.3s;
-            display: inline-flex;
+        /* ===== ПОИСК + ТЕМА ===== */
+        .tabs-right {
+            flex: 0 0 auto;
+            display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
             flex-shrink: 0;
         }
 
-        .theme-toggle:hover {
-            transform: rotate(-18deg) scale(1.05);
-            border-color: var(--accent);
-            box-shadow: var(--ring);
-        }
-
-        /* ===== ПОИСК ===== */
         .search-wrapper {
             display: flex;
             align-items: center;
             background: var(--surface-2);
-            border-radius: 12px;
-            padding: 4px 12px;
+            border-radius: 7px;
+            padding: 2px 6px;
             border: 1px solid var(--border);
-            transition: all 0.25s;
+            transition: all var(--transition);
         }
 
         .search-wrapper:focus-within {
@@ -277,9 +297,9 @@
         }
 
         .search-icon {
-            opacity: 0.5;
-            font-size: 0.9rem;
-            margin-right: 8px;
+            opacity: 0.45;
+            font-size: 0.75rem;
+            margin-right: 3px;
         }
 
         .search-input {
@@ -287,11 +307,11 @@
             border: none;
             color: var(--text);
             font-family: var(--sans);
-            font-size: 0.86rem;
-            padding: 7px 0;
-            width: 130px;
+            font-size: 0.7rem;
+            padding: 3px 0;
+            width: 80px;
             outline: none;
-            transition: width 0.3s;
+            transition: width var(--transition);
         }
 
         .search-input::placeholder {
@@ -299,7 +319,7 @@
         }
 
         .search-input:focus {
-            width: 190px;
+            width: 120px;
         }
 
         .search-clear {
@@ -307,10 +327,10 @@
             border: none;
             color: var(--text-dim);
             cursor: pointer;
-            font-size: 1rem;
-            padding: 0 4px;
+            font-size: 0.75rem;
+            padding: 0 2px;
             display: none;
-            transition: color 0.2s;
+            transition: color var(--transition);
         }
 
         .search-clear.visible {
@@ -322,13 +342,38 @@
         }
 
         .search-count {
-            font-size: 0.72rem;
+            font-size: 0.6rem;
             color: var(--text-faint);
-            margin-left: 6px;
+            margin-left: 3px;
             white-space: nowrap;
+            min-width: 14px;
         }
 
-        /* ===== ОСНОВНАЯ СЕТКА ===== */
+        .theme-toggle {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(-16deg) scale(1.05);
+            border-color: var(--accent);
+            box-shadow: var(--ring);
+        }
+
+        /* ============================================================
+           ОСТАЛЬНЫЕ СТИЛИ (без изменений)
+           ============================================================ */
         .main-container {
             max-width: 1440px;
             margin: 0 auto;
@@ -337,34 +382,38 @@
             padding: 34px 24px 80px;
         }
 
-        /* ===== САЙДБАР ===== */
         .sidebar {
-            width: 258px;
+            width: 260px;
             flex-shrink: 0;
             background: var(--surface);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 20px 18px;
             height: fit-content;
             position: sticky;
-            top: 96px;
+            top: calc(var(--nav-h) + 22px);
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
-            max-height: calc(100vh - 120px);
+            max-height: calc(100vh - var(--nav-h) - 50px);
             overflow-y: auto;
-            transition: background 0.3s, border-color 0.3s;
+            transition: background var(--transition), border-color var(--transition);
         }
-
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
         .sidebar h3 {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: 1.4px;
+            letter-spacing: 1.5px;
             margin-bottom: 14px;
             color: var(--text-faint);
             font-weight: 600;
         }
-
         .sidebar-list {
             list-style: none;
             padding: 0;
@@ -372,47 +421,55 @@
             flex-direction: column;
             gap: 2px;
         }
-
+        .sidebar-list li {
+            display: block;
+        }
         .sidebar-list a {
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             cursor: pointer;
             display: block;
-            padding: 7px 12px;
-            border-radius: 10px;
-            transition: all 0.2s;
+            padding: 6px 12px;
+            border-radius: 9px;
+            transition: all var(--transition);
             border-left: 2px solid transparent;
+            line-height: 1.4;
         }
-
         .sidebar-list a:hover {
             color: var(--text);
             background: var(--surface-2);
             border-left-color: var(--accent);
             transform: translateX(3px);
         }
-
+        .sidebar-list a.active {
+            color: var(--text);
+            background: var(--surface-2);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
         .sidebar-list .sub-item a {
             padding-left: 24px;
-            font-size: 0.8rem;
+            font-size: 0.76rem;
             color: var(--text-faint);
         }
+        .sidebar-list .sub-item a:hover {
+            color: var(--text-dim);
+        }
 
-        /* ===== КОНТЕНТ ===== */
         .content {
             flex: 1;
             min-width: 0;
         }
 
-        /* ===== ЗАГОЛОВКИ ===== */
         h1 {
             font-family: var(--display);
-            font-size: clamp(1.6rem, 3vw, 2.15rem);
+            font-size: clamp(1.5rem, 2.8vw, 2.1rem);
             font-weight: 700;
             line-height: 1.15;
             letter-spacing: -0.5px;
-            margin-bottom: 26px;
-            padding-bottom: 18px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -423,7 +480,6 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         h2,
         h3,
         h4 {
@@ -431,216 +487,178 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-
-        h4 {
-            font-size: 0.98rem;
-            font-weight: 600;
-            color: var(--accent-2);
-            margin-top: 14px;
-        }
-
-        /* ===== КАРТОЧКИ ===== */
-        .card {
-            position: relative;
-            background: var(--surface);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            border-radius: var(--radius);
-            padding: 24px 26px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(130deg, rgba(167, 139, 250, 0.5), transparent 40%, transparent 60%, rgba(34, 211, 238, 0.4));
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.35s;
-            pointer-events: none;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-            border-color: transparent;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card.hidden {
-            display: none !important;
-        }
-
-        .card.highlight {
-            border-color: transparent;
-        }
-
-        .card.highlight::before {
-            opacity: 1;
-            background: linear-gradient(130deg, var(--accent), var(--accent-2));
-        }
-
-        .card h3 {
-            color: var(--text);
-            margin-bottom: 12px;
-            font-size: 1.12rem;
-            font-weight: 600;
+        h3 {
+            font-size: 1.10rem;
             letter-spacing: -0.2px;
             display: flex;
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
         }
-
-        .card h3 a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.2s;
-            border-bottom: 1px solid transparent;
-        }
-
-        .card h3 a:hover {
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--accent-2);
-            border-bottom-color: var(--accent-2);
+            margin-top: 14px;
         }
 
+        .card {
+            position: relative;
+            background: var(--surface);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: var(--radius);
+            padding: 22px 26px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform 0.2s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: auto 240px;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.45), transparent 38%, transparent 62%, rgba(34, 211, 238, 0.35));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.30s ease;
+            pointer-events: none;
+        }
+        .card:hover {
+            border-color: transparent;
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+        .card.hidden {
+            display: none !important;
+        }
+        .card.highlight {
+            border-color: transparent;
+        }
+        .card.highlight::before {
+            opacity: 1;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        }
         .card p {
             margin-bottom: 8px;
             color: var(--text-dim);
         }
-
         .card ol,
         .card ul {
             color: var(--text-dim);
+            padding-left: 22px;
         }
-
         .card ol li,
         .card ul li {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
-
         .card strong {
             color: var(--text);
             font-weight: 600;
         }
-
         .card .tool-details-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             margin-top: 14px;
-            padding: 8px 18px;
+            padding: 7px 18px;
             background: var(--surface-2);
             color: var(--text);
             border: 1px solid var(--border-strong);
-            border-radius: 11px;
+            border-radius: 10px;
             font-family: var(--sans);
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.28s;
-            float: right;
+            transition: all var(--transition);
         }
-
         .card .tool-details-btn::after {
-            content: "→";
-            transition: transform 0.28s;
+            content: '→';
+            transition: transform var(--transition);
         }
-
         .card .tool-details-btn:hover {
             background: var(--grad);
             color: #0a0713;
             border-color: transparent;
-            box-shadow: 0 8px 22px -8px rgba(167, 139, 250, 0.7);
+            box-shadow: 0 8px 24px -10px rgba(167, 139, 250, 0.60);
         }
-
         [data-theme="light"] .card .tool-details-btn:hover {
             color: #fff;
         }
-
         .card .tool-details-btn:hover::after {
             transform: translateX(4px);
         }
 
-        /* ===== ALERT ===== */
         .alert {
             position: relative;
-            background: linear-gradient(120deg, rgba(251, 113, 133, 0.14), rgba(251, 113, 133, 0.05));
-            border: 1px solid rgba(251, 113, 133, 0.25);
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.12), rgba(251, 113, 133, 0.04));
+            border: 1px solid rgba(251, 113, 133, 0.20);
             border-left: 3px solid var(--alert);
             padding: 16px 20px 16px 46px;
             border-radius: var(--radius-sm);
-            margin: 18px 0;
+            margin: 16px 0;
             font-weight: 400;
-            font-size: 0.94rem;
+            font-size: 0.92rem;
             color: var(--text);
         }
-
         .alert::before {
-            content: "⚠";
+            content: '⚠';
             position: absolute;
             left: 16px;
             top: 15px;
             font-size: 1.05rem;
             color: var(--alert);
         }
-
         .alert strong {
             color: #fda4af;
         }
-
         [data-theme="light"] .alert strong {
             color: #be123c;
         }
 
-        /* ===== TOOL GRID ===== */
         .tool-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 18px;
         }
-
         .tool-grid .card {
             margin-bottom: 0;
             display: flex;
             flex-direction: column;
         }
-
         .tool-grid .card p {
             flex: 1;
         }
+        .tool-grid .card .tool-details-btn {
+            align-self: flex-start;
+            margin-top: 12px;
+        }
 
-        /* ===== КОД ===== */
         pre,
         code {
             font-family: var(--mono);
-            font-size: 0.83rem;
+            font-size: 0.81rem;
         }
-
         code {
             background: var(--code-bg);
-            padding: 3px 8px;
-            border-radius: 7px;
+            padding: 3px 9px;
+            border-radius: 6px;
             border: 1px solid var(--border);
             color: var(--accent-2);
             word-break: break-word;
         }
-
         [data-theme="light"] code {
             color: #0e7490;
         }
-
         pre {
             display: flex;
             align-items: center;
@@ -654,7 +672,6 @@
             overflow-x: auto;
             position: relative;
         }
-
         pre code {
             background: transparent;
             padding: 0;
@@ -664,61 +681,63 @@
             color: #d6d3f0;
             word-break: break-all;
         }
-
         [data-theme="light"] pre code {
             color: #2a2740;
         }
-
         .copy-btn {
             background: var(--surface-2);
             color: var(--text);
             border: 1px solid var(--border-strong);
-            padding: 5px 13px;
-            border-radius: 9px;
+            padding: 4px 13px;
+            border-radius: 8px;
             cursor: pointer;
             font-family: var(--sans);
-            font-size: 0.72rem;
+            font-size: 0.70rem;
             font-weight: 600;
-            transition: all 0.25s;
+            transition: all var(--transition);
             margin-left: auto;
             white-space: nowrap;
         }
-
         .copy-btn:hover {
             background: var(--grad);
             color: #0a0713;
             border-color: transparent;
         }
-
         [data-theme="light"] .copy-btn:hover {
             color: #fff;
         }
 
-        /* ===== ВКЛАДКИ ===== */
         .tab-content {
             display: none;
+            animation: fadeIn 0.25s ease;
         }
-
         .tab-content.active {
             display: block;
         }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        /* ===== БЕЙДЖИ / МЕТОДЫ ===== */
         .tier-badge {
             background: var(--grad);
             color: #0a0713;
-            padding: 5px 15px;
+            padding: 4px 16px;
             border-radius: 999px;
             font-family: var(--display);
-            font-size: 0.72rem;
+            font-size: 0.70rem;
             font-weight: 700;
             letter-spacing: 0.6px;
-            vertical-align: middle;
             display: inline-flex;
             align-items: center;
-            box-shadow: 0 6px 18px -6px rgba(167, 139, 250, 0.6);
+            box-shadow: 0 6px 18px -8px rgba(167, 139, 250, 0.50);
         }
-
         [data-theme="light"] .tier-badge {
             color: #fff;
         }
@@ -729,66 +748,61 @@
             padding: 12px 16px;
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
             margin: 12px 0;
-            font-size: 0.92rem;
+            font-size: 0.90rem;
             color: var(--text-dim);
         }
-
         .method-card.tier3 {
             border-color: var(--ok);
         }
-
         .method-card.tier2 {
             border-color: var(--warn);
         }
 
         .keyboard-shortcut {
             background: var(--surface-2);
-            padding: 3px 10px;
-            border-radius: 7px;
-            font-size: 0.78rem;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.76rem;
             font-family: var(--mono);
             border: 1px solid var(--border-strong);
             color: var(--text);
         }
-
         .registry-path {
             background: var(--code-bg);
             padding: 4px 12px;
-            border-radius: 8px;
+            border-radius: 7px;
             font-family: var(--mono);
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             border: 1px solid var(--border);
             display: inline-block;
             margin: 2px 0;
+            word-break: break-all;
         }
-
         .tooltip-trigger {
             border-bottom: 1px dashed var(--text-faint);
             cursor: help;
             color: var(--accent-2);
         }
 
-        /* ===== ЧЕК-ЛИСТ ===== */
+        /* ЧЕК-ЛИСТ */
         .checklist-item {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 11px 14px;
+            padding: 10px 14px;
             border-radius: var(--radius-sm);
-            margin: 6px 0;
-            transition: all 0.2s;
+            margin: 5px 0;
+            transition: all var(--transition);
             cursor: pointer;
-            font-size: 0.92rem;
+            font-size: 0.90rem;
             background: var(--surface);
             border: 1px solid var(--border);
         }
-
         .checklist-item:hover {
             background: var(--surface-2);
             border-color: var(--border-strong);
             transform: translateX(3px);
         }
-
         .checklist-item input[type="checkbox"] {
             width: 20px;
             height: 20px;
@@ -796,69 +810,61 @@
             cursor: pointer;
             flex-shrink: 0;
         }
-
         .checklist-item span {
             color: var(--text-dim);
         }
-
         .checklist-item.done {
-            opacity: 0.55;
+            opacity: 0.50;
             background: transparent;
         }
-
         .checklist-item.done span {
             text-decoration: line-through;
             color: var(--text-faint);
         }
-
         .progress-bar {
-            height: 8px;
+            height: 7px;
             background: var(--surface-2);
             border-radius: 999px;
-            margin: 14px 0;
+            margin: 12px 0 6px;
             overflow: hidden;
             border: 1px solid var(--border);
         }
-
         .progress-bar .fill {
             height: 100%;
             background: var(--grad);
             border-radius: 999px;
-            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: 0 0 16px rgba(167, 139, 250, 0.5);
+            transition: width 0.4s ease;
+            box-shadow: 0 0 16px rgba(167, 139, 250, 0.30);
         }
-
         .checklist-actions {
             display: flex;
             gap: 10px;
             justify-content: flex-end;
             margin-top: 16px;
+            flex-wrap: wrap;
         }
-
         .checklist-actions button {
             background: var(--grad);
             color: #0a0713;
             border: none;
-            padding: 9px 20px;
-            border-radius: 11px;
+            padding: 8px 20px;
+            border-radius: 10px;
             font-family: var(--sans);
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 0.80rem;
             cursor: pointer;
-            transition: all 0.28s;
-            box-shadow: 0 8px 22px -10px rgba(167, 139, 250, 0.7);
+            transition: all var(--transition);
+            box-shadow: 0 8px 22px -12px rgba(167, 139, 250, 0.55);
         }
-
         [data-theme="light"] .checklist-actions button {
             color: #fff;
         }
-
         .checklist-actions button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px -10px rgba(167, 139, 250, 0.8);
+            box-shadow: 0 12px 30px -12px rgba(167, 139, 250, 0.70);
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
+        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -871,11 +877,9 @@
             align-items: center;
             padding: 24px;
         }
-
         .modal-overlay.active {
             display: flex;
         }
-
         .modal-box {
             background: var(--surface-strong);
             backdrop-filter: var(--blur);
@@ -887,199 +891,225 @@
             border-radius: 22px;
             padding: 34px 38px;
             border: 1px solid var(--border-strong);
-            box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.80);
             position: relative;
+            animation: modalIn 0.25s ease;
         }
-
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
         .modal-box h2 {
             font-family: var(--display);
             color: var(--text);
-            margin-bottom: 18px;
-            font-size: 1.55rem;
+            margin-bottom: 16px;
+            font-size: 1.50rem;
             font-weight: 700;
-            letter-spacing: -0.4px;
+            letter-spacing: -0.3px;
             padding-bottom: 14px;
             border-bottom: 1px solid var(--border);
         }
-
         .modal-box .close-modal {
             position: absolute;
-            top: 18px;
-            right: 22px;
+            top: 16px;
+            right: 20px;
             background: var(--surface-2);
             border: 1px solid var(--border);
             color: var(--text);
-            font-size: 1.4rem;
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
+            font-size: 1.30rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             cursor: pointer;
             line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s;
+            transition: all var(--transition);
         }
-
         .modal-box .close-modal:hover {
             color: #fff;
             background: var(--alert);
             border-color: transparent;
             transform: rotate(90deg);
         }
-
         .modal-box p {
-            margin-bottom: 12px;
-            font-size: 0.96rem;
+            margin-bottom: 10px;
+            font-size: 0.94rem;
             color: var(--text-dim);
         }
-
         .modal-box ul {
             padding-left: 22px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             color: var(--text-dim);
         }
-
         .modal-box ul li {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
-
         .modal-box strong {
             color: var(--text);
         }
-
         .modal-box a {
             color: var(--accent-2);
             text-decoration: none;
             font-weight: 500;
             border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
+            transition: border-color var(--transition);
         }
-
         .modal-box a:hover {
             border-bottom-color: var(--accent-2);
         }
 
-        /* ===== КНОПКА НАВЕРХ ===== */
+        .read-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: var(--grad);
+            z-index: 1002;
+            transition: width 0.08s linear;
+            box-shadow: 0 0 12px rgba(167, 139, 250, 0.40);
+        }
+
+        mark.search-hl {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.50), rgba(34, 211, 238, 0.40));
+            color: inherit;
+            border-radius: 4px;
+            padding: 0 3px;
+        }
+
         .go-top {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 52px;
-            height: 52px;
+            bottom: 28px;
+            right: 28px;
+            width: 50px;
+            height: 50px;
             background: var(--grad);
             color: #0a0713;
             border: none;
-            border-radius: 15px;
-            font-size: 1.4rem;
+            border-radius: 14px;
+            font-size: 1.35rem;
             cursor: pointer;
-            box-shadow: 0 14px 34px -10px rgba(167, 139, 250, 0.7);
-            transition: all 0.3s;
+            box-shadow: 0 14px 34px -12px rgba(167, 139, 250, 0.60);
+            transition: all var(--transition);
             opacity: 0;
-            transform: translateY(12px) scale(0.9);
+            transform: translateY(14px) scale(0.90);
             pointer-events: none;
             z-index: 999;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         [data-theme="light"] .go-top {
             color: #fff;
         }
-
         .go-top.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
             pointer-events: auto;
         }
-
         .go-top:hover {
             transform: translateY(-4px) scale(1.06);
-            box-shadow: 0 20px 44px -12px rgba(167, 139, 250, 0.85);
+            box-shadow: 0 20px 44px -14px rgba(167, 139, 250, 0.75);
         }
 
-        /* ===== АДАПТИВНОСТЬ ===== */
+        /* ============================================================
+           АДАПТИВНОСТЬ
+           ============================================================ */
         @media (max-width: 1024px) {
             .sidebar {
-                width: 210px;
+                width: 220px;
             }
         }
 
         @media (max-width: 860px) {
-            body {
-                padding-top: 118px;
+            :root {
+                --nav-h: 58px;
             }
-
+            body {
+                padding-top: 0;
+            }
+            .navbar {
+                position: relative;
+                padding: 6px 12px;
+                height: auto;
+                min-height: 58px;
+            }
             .nav-container {
                 flex-direction: column;
                 height: auto;
-                padding: 12px 0;
-                gap: 10px;
+                padding: 4px 0;
+                gap: 4px;
             }
-
             .logo {
+                font-size: 1rem;
                 justify-content: center;
             }
-
-            .nav-tabs {
-                justify-content: center;
+            .tabs-wrapper {
                 width: 100%;
+                margin: 0;
+                padding: 2px 0;
+                gap: 3px;
+            }
+            .tab-btn {
+                font-size: 0.62rem;
+                padding: 3px 7px;
+            }
+            .search-input {
+                width: 70px;
+                font-size: 0.65rem;
+            }
+            .search-input:focus {
+                width: 100px;
+            }
+            .tabs-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 2px;
             }
 
             .main-container {
                 flex-direction: column;
-                padding: 22px 16px 70px;
-                gap: 18px;
+                padding: 18px 14px 60px;
+                gap: 16px;
             }
-
             .sidebar {
                 width: 100%;
                 position: static;
-                max-height: 220px;
+                max-height: 200px;
+                top: 0;
             }
-
             .tool-grid {
                 grid-template-columns: 1fr;
             }
-
             pre {
                 flex-direction: column;
                 align-items: stretch;
             }
-
             .copy-btn {
                 align-self: flex-start;
                 margin-left: 0;
             }
-
             .modal-box {
-                padding: 26px 22px;
+                padding: 24px 20px;
             }
-
             .go-top {
-                width: 46px;
-                height: 46px;
-                font-size: 1.2rem;
-                bottom: 18px;
-                right: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .tab-btn {
-                font-size: 0.74rem;
-                padding: 6px 11px;
-            }
-
-            .logo {
+                width: 44px;
+                height: 44px;
                 font-size: 1.1rem;
+                bottom: 16px;
+                right: 16px;
             }
-
             .card {
                 padding: 18px 18px;
             }
-
             .card .tool-details-btn {
                 float: none;
                 width: 100%;
@@ -1087,100 +1117,28 @@
             }
         }
 
-
-
-        /* ===== ОПТИМИЗАЦИЯ ДВИЖЕНИЯ И ОТРИСОВКИ =====
-           Стеклянная эстетика сохранена на ключевых поверхностях, а постоянные
-           и каскадные анимации отключены, чтобы снизить нагрузку на GPU. */
-        :root {
-            --blur: blur(12px) saturate(125%);
-        }
-
-        html {
-            scroll-behavior: auto;
-        }
-
-        body,
-        .bg-aurora {
-            transition: none;
-        }
-
-        .bg-aurora {
-            filter: none;
-        }
-
-        /* Карточек на странице много: стекло создаётся прозрачностью,
-           границей и бликом без отдельного blur-слоя на каждой карточке. */
-        .card {
-            background: linear-gradient(145deg, var(--surface-2), var(--surface));
-            -webkit-backdrop-filter: none;
-            backdrop-filter: none;
-            animation: none;
-            opacity: 1;
-            transform: none;
-            transition: border-color 0.15s ease, background-color 0.15s ease;
-            content-visibility: auto;
-            contain-intrinsic-size: auto 260px;
-        }
-
-        .card::before {
-            transition: opacity 0.15s ease;
-        }
-
-        .card:hover {
-            transform: none;
-            box-shadow: var(--shadow-sm);
-            border-color: var(--border-strong);
-        }
-
-        .card:nth-child(n),
-        .tab-content.active,
-        .modal-overlay.active,
-        .modal-box {
-            animation: none;
-        }
-
-        .tab-btn,
-        .sidebar-list a,
-        .card .tool-details-btn,
-        .copy-btn,
-        .checklist-item,
-        .checklist-actions button,
-        .modal-box .close-modal {
-            transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
-        }
-
-        .card .tool-details-btn:hover::after,
-        .sidebar-list a:hover,
-        .checklist-actions button:hover,
-        .modal-box .close-modal:hover {
-            transform: none;
-        }
-
-        .progress-bar .fill {
-            transition: none;
-            box-shadow: none;
-        }
-
-        .go-top {
-            transition: opacity 0.15s ease;
-            transform: none;
-        }
-
-        .go-top.visible,
-        .go-top:hover {
-            transform: none;
-        }
-
-        @media (max-width: 860px) {
-            /* На мобильных оставляем стекло в навигации, но уменьшаем blur. */
-            :root {
-                --blur: blur(9px) saturate(118%);
+        @media (max-width: 480px) {
+            .tab-btn {
+                font-size: 0.55rem;
+                padding: 2px 5px;
             }
-
-            /* Многострочная фиксированная навигация не перекрывает контент. */
-            body {
-                padding-top: 230px;
+            .logo {
+                font-size: 0.9rem;
+            }
+            .search-input {
+                width: 60px;
+                font-size: 0.6rem;
+            }
+            .search-input:focus {
+                width: 80px;
+            }
+            .search-wrapper {
+                padding: 2px 4px;
+            }
+            .theme-toggle {
+                width: 26px;
+                height: 26px;
+                font-size: 0.75rem;
             }
         }
 
@@ -1193,86 +1151,98 @@
             }
         }
     </style>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
-
 <body>
+
+    <!-- ===== ФОНЫ ===== -->
     <div class="bg-aurora" aria-hidden="true"></div>
     <div class="bg-grid" aria-hidden="true"></div>
-    <div class="navbar">
+
+    <!-- ===== ПРОГРЕСС ЧТЕНИЯ ===== -->
+    <div class="read-progress" id="readProgress" aria-hidden="true"></div>
+
+    <!-- ===== НАВБАР ===== -->
+    <header class="navbar" role="navigation">
         <div class="nav-container">
-            <div class="logo">🎯 <span class="mark">CS2&nbsp;CHECK</span></div>
-            <div class="nav-tabs">
+            <div class="logo">☯ <span class="mark">sayonara&nbsp;check</span></div>
+
+            <div class="tabs-wrapper" id="tabsWrapper">
                 <button class="tab-btn active" data-tab="overview">📋 Общий</button>
                 <button class="tab-btn" data-tab="tier3">🟢 TIER 3</button>
                 <button class="tab-btn" data-tab="tier2">🟠 TIER 2</button>
+                <button class="tab-btn" data-tab="tier1">🔴 TIER 1</button>
                 <button class="tab-btn" data-tab="tools">🔧 Инструменты</button>
                 <button class="tab-btn" data-tab="methods">📌 Методы</button>
                 <button class="tab-btn" data-tab="checklist">✅ Чек-лист</button>
                 <button class="tab-btn" data-tab="important">⚠️ Важно</button>
                 <button class="tab-btn" data-tab="redflags">🚩 Флаги</button>
+                <button class="tab-btn" data-tab="cheattypes">🎯 Читы</button>
                 <button class="tab-btn" data-tab="glossary">📖 Глоссарий</button>
+                <button class="tab-btn" data-tab="expert">🧠 Советы</button>
+            </div>
+
+            <div class="tabs-right">
                 <div class="search-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск...">
-                    <button class="search-clear" id="searchClear" aria-label="Очистить">✕</button>
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск..." />
+                    <button class="search-clear" id="searchClear">✕</button>
                     <span class="search-count" id="searchCount"></span>
                 </div>
-                <button class="theme-toggle" id="themeToggle" title="Сменить тему">🌙</button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
             </div>
         </div>
-    </div>
+    </header>
 
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
     <div class="main-container">
-        <div class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="complementary">
             <h3>📑 Содержание</h3>
-            <ul class="sidebar-list" id="sidebarList">
-                <li><a onclick="scrollToSection('basics')">Основные положения</a></li>
-            </ul>
-        </div>
+            <ul class="sidebar-list" id="sidebarList"></ul>
+        </aside>
 
-        <div class="content" id="content">
+        <main class="content" id="content" role="main">
+
             <!-- ====== OVERVIEW ====== -->
-            <div id="overview" class="tab-content active">
+            <section id="overview" class="tab-content active" role="tabpanel">
                 <h1>📋 Общий гайд по проверке на читы CS2</h1>
+
                 <div class="card" id="basics">
                     <h3>Основные положения</h3>
-                    <ol style="padding-left: 22px;">
-                        <li>Скачиваем все программы <strong>только с официальных сайтов</strong>. Не предлагайте свои
-                            версии.</li>
+                    <ol>
+                        <li>Скачиваем все программы <strong>только с официальных сайтов</strong>. Не предлагайте свои версии.</li>
                         <li>Создайте отдельную папку для инструментов проверки.</li>
                         <li>Игнорируйте скрытый рабочий стол и доп. мониторы. Работайте только с основным.</li>
                     </ol>
                 </div>
+
                 <div class="card">
                     <h3>Типы доказательств</h3>
-                    <ol style="padding-left: 22px;">
+                    <ol>
                         <li><strong>Хранение</strong> — файл найден в файловой системе.</li>
                         <li><strong>Сокрытие</strong> — логи удаления/переименования.</li>
                         <li><strong>Запуск</strong> — следы запуска .exe/.dll в памяти или Prefetch (.pf).</li>
                     </ol>
                 </div>
+
                 <div class="alert">
-                    <strong>Правило выдачи наказания:</strong><br>
-                    Чит должен быть либо запущен в течение последних 3 месяцев, либо храниться на ПК. Достаточно
-                    признания или характерных признаков (размер, цифровая подпись, троллинг папка и т.д.).
+                    <strong>Правило выдачи наказания:</strong><br />
+                    Чит должен быть либо запущен в течение последних 3 месяцев, либо храниться на ПК. Достаточно признания или характерных признаков (размер, цифровая подпись, троллинг-папка и т.д.).
                 </div>
+
                 <div class="card">
                     <h3>Если нашли подозрительный запуск, но файл отсутствует</h3>
-                    <p>1. Ищите по названию в <strong>Everything</strong>.<br>
+                    <p>1. Ищите по названию в <strong>Everything</strong>.<br />
                         2. Если не нашли — <strong>JournalTrace</strong> и ищите действия с этим файлом.</p>
                 </div>
-            </div>
+            </section>
 
             <!-- ====== TIER 3 ====== -->
-            <div id="tier3" class="tab-content">
+            <section id="tier3" class="tab-content" role="tabpanel">
                 <h1><span class="tier-badge">TIER 3</span> Базовая проверка</h1>
+
                 <div class="card">
                     <h3>Критерии TIER 3</h3>
-                    <ul style="padding-left: 22px;">
+                    <ul>
                         <li>✅ Проверка CS2 по фасту (инвентарь, оверлей и т.д.)</li>
                         <li>✅ Проверка стандартных папок</li>
                         <li>✅ Использование всех базовых программ</li>
@@ -1280,61 +1250,61 @@
                         <li>✅ Проверка папки CS2</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>Места для быстрой проверки</h3>
-                    <p><strong>Загрузки, C:\, AppData, Program Files,</strong> папки игры CS2 (на Lua-скрипты,
-                        подозрительные DLL и .exe).</p>
+                    <p><strong>Загрузки, C:\, AppData, Program Files,</strong> папки игры CS2 (на Lua-скрипты, подозрительные DLL и .exe).</p>
                     <div class="method-card tier3">
-                        <strong>Типичные пути:</strong><br>
-                        <code>C:\Users\%USERNAME%\AppData\</code><br>
-                        <code>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\</code><br>
+                        <strong>Типичные пути:</strong><br />
+                        <code>C:\Users\%USERNAME%\AppData\</code><br />
+                        <code>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\</code><br />
                         <code>C:\ProgramData\</code>
                     </div>
                 </div>
+
                 <div class="card" id="everything">
                     <h3>🔍 Everything</h3>
-                    <p>Быстрый поиск по файловой системе. <span class="tooltip-trigger"
-                            title="Индексирует все файлы за секунды">ⓘ</span></p>
+                    <p>Быстрый поиск по файловой системе. <span class="tooltip-trigger" title="Индексирует все файлы за секунды">ⓘ</span></p>
                     <pre><code>ext:.exe|ext:.dll</code> <button class="copy-btn" data-copy="ext:.exe|ext:.dll">Копировать</button></pre>
-                    <p>ПКМ по колонкам → <strong>Data Accessed (дата изменения)</strong> → сортировка по дате доступа.
-                    </p>
+                    <p>ПКМ по колонкам → <strong>Data Accessed (дата изменения)</strong> → сортировка по дате доступа.</p>
                     <p><span class="keyboard-shortcut">Ctrl+F</span> — быстрый поиск в текущей папке</p>
                 </div>
+
                 <div class="card" id="journal">
                     <h3>📜 JournalTrace</h3>
-                    <ul style="padding-left: 22px;">
+                    <ul>
                         <li>Drive → Select → <code>C:\</code></li>
                         <li>Drive → Scan</li>
-                        <li>Layout → Data Grid / Directory Tree (в зависимости от нужды, ниже способ для Data Grid)</li>
+                        <li>Layout → Data Grid / Directory Tree</li>
                         <li>Поиск: <code>.exe</code> или <code>.dll</code></li>
                     </ul>
-                    <h4 style="margin-top:10px;">Поиск удалённых файлов</h4>
-                    <ul style="padding-left:22px;" start="5">
+                    <h4>Поиск удалённых файлов</h4>
+                    <ul start="5">
                         <li>Сортировка по Date (два клика)</li>
                         <li>Включить фильтр <strong>Deleted</strong></li>
                         <li>Ищем подозрительные удаления после запуска CS2</li>
                         <li>ПКМ → Show file information</li>
                     </ul>
                     <div class="alert">
-                        <strong>Удаление через Корзину:</strong><br>
-                        Файлы попадают в <code>C:\$Recycle.Bin</code> и переименовываются ($Rxxxxxx). Ищите файлы,
-                        начинающиеся на <code>$</code>.
+                        <strong>Удаление через Корзину:</strong><br />
+                        Файлы попадают в <code>C:\$Recycle.Bin</code> и переименовываются ($Rxxxxxx). Ищите файлы, начинающиеся на <code>$</code>.
                     </div>
                     <h4>Поиск замены файлов</h4>
-                    <ul style="padding-left:22px;" start="5">
+                    <ul start="5">
                         <li>Сортировка по Date</li>
                         <li>Фильтр <strong>Rename: old name</strong></li>
                         <li>Анализ через Show file information</li>
                     </ul>
                 </div>
-            </div>
+            </section>
 
             <!-- ====== TIER 2 ====== -->
-            <div id="tier2" class="tab-content">
+            <section id="tier2" class="tab-content" role="tabpanel">
                 <h1><span class="tier-badge">TIER 2</span> Глубокая проверка</h1>
+
                 <div class="card">
                     <h3>Критерии TIER 2</h3>
-                    <ul style="padding-left:22px;">
+                    <ul>
                         <li>✅ Всё из TIER 3</li>
                         <li>✅ Анализ памяти (System Informer)</li>
                         <li>✅ Расширенный поиск в JournalTrace с regex</li>
@@ -1342,360 +1312,573 @@
                         <li>✅ Анализ автозагрузки</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <p>Everything и LastActivity — вспомогательные. Основной акцент на продвинутых программах.</p>
                 </div>
+
                 <div class="card" id="sysinf">
                     <h3>🖥️ System Informer</h3>
-                    <p><strong>Установка:</strong> Включите "Enable kernel-mode driver" в System → Options. При ошибке —
-                        Help → Check for Updates → Canary.</p>
+                    <p><strong>Установка:</strong> Включите "Enable kernel-mode driver" в System → Options. При ошибке — Help → Check for Updates → Canary.</p>
                     <h4>Поиск файлов</h4>
-                    <ol style="padding-left:22px;">
-                        <li>Нажмите сочетание клавиш <code>ctrl + f</code></li>
+                    <ol>
+                        <li>Нажмите <code>ctrl + f</code></li>
                         <li>Введите специализированный список для этого способа</li>
-                        <li>Обязательно включите <strong>RegEx</strong> (между Clear Search и Match Case)</li>
+                        <li>Обязательно включите <strong>RegEx</strong></li>
                         <li>Нажмите "Искать" (Find)</li>
                         <li>Просматривайте странные процессы</li>
                     </ol>
                     <h4>Проверка через csrss.exe</h4>
-                    <ol style="padding-left:22px;">
+                    <ol>
                         <li>Запуск от имени администратора</li>
-                        <li>System -> Options -> Enable Kernel Mode Driver</li>
+                        <li>System → Options → Enable Kernel Mode Driver</li>
                         <li>Завершить все процессы античитов</li>
-                        <li>Search Processes -> csrss.exe</li>
-                        <li>Выбираем один из двух процессов в зависимости от нужды</li>
-                        <li>Properties -> Options -> Strings -> Отмечаем все галочки + ставим минимальную длину 4 ->
-                            Filter -> RegEx (case-insensitive) -> Вставляем текст</li>
+                        <li>Search Processes → csrss.exe</li>
+                        <li>Выбираем один из двух процессов</li>
+                        <li>Properties → Options → Strings → Отмечаем все галочки + ставим минимальную длину 4 → Filter → RegEx → Вставляем текст</li>
                     </ol>
                 </div>
+
                 <div class="card">
                     <h3>📜 JournalTrace (Advanced)</h3>
                     <p>Используйте модифицированную версию с поддержкой regex. Скрыть файлы практически невозможно.</p>
                     <p><strong>Совет:</strong> <code>||</code> как разделитель для фильтрации:</p>
                     <pre><code>.exe||.dll||cheat||hack</code> <button class="copy-btn" data-copy=".exe||.dll||cheat||hack">Копировать</button></pre>
                 </div>
+
                 <div class="card">
                     <h3>🔍 Проверка реестра</h3>
-                    <p><code>Компьютер\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\State\UserSettings</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched</code>
-                    </p>
-                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache</code>
-                    </p>
-                    <p><code></code></p>
+                    <p><code>Компьютер\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\State\UserSettings</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\ShowJumpView</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FeatureUsage\AppSwitched</code></p>
+                    <p><code>Компьютер\HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache</code></p>
                     <p>Ищите ключи с подозрительными названиями (cheat, hack, injector).</p>
                 </div>
+
                 <div class="card">
                     <h3>🚀 Автозагрузка</h3>
-                    <ul style="padding-left:22px;">
+                    <ul>
                         <li><code>shell:startup</code> — текущий пользователь</li>
                         <li><code>shell:common startup</code> — общая папка</li>
                         <li>Диспетчер задач → Автозагрузка</li>
                     </ul>
                 </div>
-            </div>
+            </section>
+
+            <!-- ====== TIER 1 ====== -->
+            <section id="tier1" class="tab-content" role="tabpanel">
+                <h1><span class="tier-badge">TIER 1</span> Экспертная проверка</h1>
+
+                <div class="alert">
+                    <strong>Уровень для сложных случаев.</strong> Применяется, когда методы TIER 3 / TIER 2 не дали результата, но подозрения остаются (аппаратные читы, спуфинг, продвинутое сокрытие).
+                </div>
+
+                <div class="card">
+                    <h3>Критерии TIER 1</h3>
+                    <ul>
+                        <li>✅ Всё из TIER 2</li>
+                        <li>✅ Анализ полного дампа памяти процессов (cs2.exe, csrss.exe, explorer.exe)</li>
+                        <li>✅ Поиск следов DMA / аппаратных читов</li>
+                        <li>✅ Проверка спуфинга HWID</li>
+                        <li>✅ Анализ драйверов и ядра (kernel-mode)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🧬 Анализ дампов памяти</h3>
+                    <p>Снимайте полный дамп подозрительных процессов и анализируйте строки, импорты и загруженные модули.</p>
+                    <ul>
+                        <li>Ищите неподписанные <code>.dll</code>, загруженные в <code>cs2.exe</code>.</li>
+                        <li>Проверяйте скрытые (unlinked) модули, отсутствующие в списке загруженных.</li>
+                        <li>Строки с URL, названиями читов, путями к конфигам.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🔌 DMA и аппаратные читы</h3>
+                    <p><strong>DMA (Direct Memory Access)</strong> — чит читает память через отдельную PCIe/FPGA-плату, программных следов на целевом ПК почти нет. Признаки:</p>
+                    <ul>
+                        <li>🔴 Нестандартные PCIe-устройства в диспетчере устройств (Screamer, LeetDMA и т.п.).</li>
+                        <li>🔴 Второй ПК / ноутбук рядом, карта захвата изображения (capture card).</li>
+                        <li>🔴 Подозрительные USB-устройства ввода (KMBox, эмуляторы мыши).</li>
+                    </ul>
+                    <div class="alert"><strong>Важно:</strong> DMA часто требует физического осмотра рабочего места, а не только ПО.</div>
+                </div>
+
+                <div class="card">
+                    <h3>🎭 Проверка спуфинга (HWID)</h3>
+                    <ul>
+                        <li>Сверяйте серийные номера дисков, MAC-адрес и SMBIOS с реальным «возрастом» системы.</li>
+                        <li>🔴 Свежие идентификаторы при старой дате установки Windows — признак спуфинга.</li>
+                        <li>Проверяйте наличие спуфер-утилит в истории запусков (BAM, Prefetch).</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🛡️ Драйверы и ядро</h3>
+                    <ul>
+                        <li>Проверяйте список загруженных драйверов на неподписанные / тестовые.</li>
+                        <li>🔴 Включённый <code>Test Mode</code> Windows или отключённая проверка подписи драйверов.</li>
+                        <li>Ищите драйверы, загруженные из <code>Temp</code> или пользовательских папок.</li>
+                    </ul>
+                </div>
+            </section>
 
             <!-- ====== TOOLS ====== -->
-            <div id="tools" class="tab-content">
+            <section id="tools" class="tab-content" role="tabpanel">
                 <h1>🔧 Инструменты</h1>
+
                 <div class="tool-grid">
                     <div class="card">
-                        <h3><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank"
-                                rel="noopener noreferrer">SSTool</a></h3>
+                        <h3><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank" rel="noopener noreferrer">SSTool</a></h3>
                         <p>Просмотр структуры диска, скрытых записей MFT и альтернативных потоков данных.</p>
                         <button class="tool-details-btn" data-tool="sstool">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">BAM
-                                Parser</a></h3>
+                        <h3><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">BAM Parser</a></h3>
                         <p>Парсер журналов Background Activity Moderator для анализа недавних запусков приложений.</p>
                         <button class="tool-details-btn" data-tool="bam">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://systeminformer.sourceforge.io/canary" target="_blank"
-                                rel="noopener noreferrer">System Informer</a></h3>
+                        <h3><a href="https://systeminformer.sourceforge.io/canary" target="_blank" rel="noopener noreferrer">System Informer</a></h3>
                         <p>Продвинутый диспетчер задач с анализом памяти процессов и строк (kernel-mode driver).</p>
                         <button class="tool-details-btn" data-tool="sysinformer">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank"
-                                rel="noopener noreferrer">PrefetchView++</a></h3>
+                        <h3><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank" rel="noopener noreferrer">PrefetchView++</a></h3>
                         <p>Детальный просмотр файлов Prefetch (.pf) с сортировкой по времени и частоте запуска.</p>
                         <button class="tool-details-btn" data-tool="prefetchview">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank"
-                                rel="noopener noreferrer">UserAssistsView</a></h3>
+                        <h3><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank" rel="noopener noreferrer">UserAssistsView</a></h3>
                         <p>Анализ записей UserAssist в реестре — история запуска программ в оболочке Windows.</p>
                         <button class="tool-details-btn" data-tool="userassist">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank"
-                                rel="noopener noreferrer">WinPrefetchView</a></h3>
+                        <h3><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank" rel="noopener noreferrer">WinPrefetchView</a></h3>
                         <p>Расширенный просмотр Prefetch с поддержкой группировки и экспорта данных.</p>
                         <button class="tool-details-btn" data-tool="winprefetch">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank"
-                                rel="noopener noreferrer">Journal Trace</a></h3>
-                        <p>Анализ изменений в файловой системе (удаления, переименования, создание) через USN Journal.
-                        </p>
+                        <h3><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank" rel="noopener noreferrer">Journal Trace</a></h3>
+                        <p>Анализ изменений в файловой системе (удаления, переименования, создание) через USN Journal.</p>
                         <button class="tool-details-btn" data-tool="journaltrace">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php"
-                                target="_blank" rel="noopener noreferrer">ShellBagAnalyzer</a></h3>
+                        <h3><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php" target="_blank" rel="noopener noreferrer">ShellBagAnalyzer</a></h3>
                         <p>Парсер ShellBag для восстановления истории открытия папок и доступа к файлам.</p>
                         <button class="tool-details-btn" data-tool="shellbag">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://www.voidtools.com/everything-1.5a/" target="_blank"
-                                rel="noopener noreferrer">Everything</a></h3>
+                        <h3><a href="https://www.voidtools.com/everything-1.5a/" target="_blank" rel="noopener noreferrer">Everything</a></h3>
                         <p>Мгновенный поиск файлов по имени и расширению с индексацией всей файловой системы.</p>
                         <button class="tool-details-btn" data-tool="everything">Подробнее</button>
                     </div>
+
                     <div class="card">
-                        <h3><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank"
-                                rel="noopener noreferrer">LastActivityView</a></h3>
-                        <p>Сводная таблица последних действий пользователя: запуски, открытия файлов, установки и др.
-                        </p>
+                        <h3><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank" rel="noopener noreferrer">LastActivityView</a></h3>
+                        <p>Сводная таблица последних действий пользователя: запуски, открытия файлов, установки и др.</p>
                         <button class="tool-details-btn" data-tool="lastactivity">Подробнее</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- ====== METHODS ====== -->
-            <div id="methods" class="tab-content">
+            <section id="methods" class="tab-content" role="tabpanel">
                 <h1>📌 Методы проверки / доказательств</h1>
+
                 <div class="card">
                     <h3>Типы доказательств</h3>
-                    <ol style="padding-left:22px;">
+                    <ol>
                         <li><strong>Хранение</strong> — файл в файловой системе.</li>
                         <li><strong>Сокрытие</strong> — логи удаления/переименования.</li>
                         <li><strong>Запуск</strong> — следы запуска исполняемого файла.</li>
                     </ol>
                 </div>
+
                 <div class="card">
                     <h3>🧠 Анализ CSRSS (csrss.exe)</h3>
-                    <p><strong>csrss.exe</strong> — системный процесс Windows (Client Server Runtime Subsystem). Он
-                        логирует все возможные запуски программ в текущей сессии. Анализ его памяти позволяет обнаружить
-                        следы исполнения .exe и .dll файлов, даже если сами файлы уже удалены.</p>
+                    <p><strong>csrss.exe</strong> — системный процесс Windows (Client Server Runtime Subsystem). Он логирует все возможные запуски программ в текущей сессии. Анализ его памяти позволяет обнаружить следы исполнения .exe и .dll файлов, даже если сами файлы уже удалены.</p>
+
                     <h4>🔹 Анализ для .exe файлов</h4>
-                    <ol style="padding-left:22px;">
-                        <li>В System Informer выберите процесс <code>csrss.exe</code> с <strong>меньшим</strong>
-                            размером в байтах.</li>
+                    <ol>
+                        <li>В System Informer выберите процесс <code>csrss.exe</code> с <strong>меньшим</strong> размером в байтах.</li>
                         <li>Примените фильтр по regex'у:
                             <pre><code>^[A-Z]:\\.+\.(exe)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(exe)$">Копировать</button></pre>
                         </li>
                         <li>Создайте папку с любым удобным названием и сохраните дамп найденных строк.</li>
                         <li>Проанализируйте полученные данные с помощью <strong>Paths Parser</strong>.</li>
                     </ol>
+
                     <h4>🔹 Анализ для .dll файлов</h4>
-                    <ol style="padding-left:22px;">
+                    <ol>
                         <li>Выберите процесс <code>csrss.exe</code> с <strong>большим</strong> размером в байтах.</li>
                         <li>Примените фильтр по regex'у:
                             <pre><code>^[A-Z]:\\.+\.(dll)$</code> <button class="copy-btn" data-copy="^[A-Z]:\\.+\.(dll)$">Копировать</button></pre>
                         </li>
                         <li>Сохраните дамп и проанализируйте через Paths Parser.</li>
                     </ol>
+
                     <h4>🔹 Обнаружение .dll и .exe одновременно</h4>
                     <p>Для отображения обоих типов файлов в одном результате используйте универсальный regex:</p>
                     <pre><code>^[a-zA-Z]:\\.+(\\)?.*?$</code> <button class="copy-btn" data-copy="^[a-zA-Z]:\\.+(\\)?.*?$">Копировать</button></pre>
+
                     <h4>🔍 Поиск файлов с изменёнными расширениями</h4>
-                    <p>Для выявления файлов, у которых расширение было переименовано:</p>
                     <pre><code>^[a-z]:.+\.((?!exe|pyd|manifest|dll|config|\\|cpl|microsoft-|shell).)*$</code> <button class="copy-btn" data-copy="^[a-z]:.+\.((?!exe|pyd|manifest|dll|config|\\|cpl|microsoft-|shell).)*$">Копировать</button></pre>
                 </div>
-            </div>
+
+                <!-- PowerShell History -->
+                <div class="card" id="powershell-history">
+                    <h3>🖥️ PowerShell History (PSReadline)</h3>
+                    <p>
+                        Начиная с <strong>PowerShell v5</strong> в Windows 10, <strong>команды</strong>, введенные в консоли <strong>PowerShell</strong>, 
+                        <strong>будут записываться модулем PSReadline</strong> в файл <code>ConsoleHost_history.txt</code>.
+                    </p>
+                    <p>
+                        Сессии PowerShell без консоли, такие как содержимое <code>.ps1</code> скриптов или выполнение команд через PowerShell ISE, 
+                        <strong>не будут записываться в этот файл</strong>.
+                    </p>
+                    <p>
+                        <strong>Расположение:</strong><br />
+                        <code>%AppData%\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt</code>
+                    </p>
+                    <p>
+                        <strong>Особенности:</strong>
+                        <ul>
+                            <li>Содержит <strong>введенные команды</strong>, <strong>по одной команде на строку</strong>, <strong>без связанных временных меток</strong> (или любых дополнительных метаданных).</li>
+                            <li>Временную метку <strong>последнего выполнения команды</strong> можно определить по временной метке <strong>последней записи</strong> самого файла.</li>
+                            <li>По умолчанию хранятся только <strong>последние 4096 команд</strong>.</li>
+                        </ul>
+                    </p>
+                    <div class="alert">
+                        <strong>Обход записи PSReadline:</strong><br />
+                        Существует необычный способ обхода записи — требуется <strong>выгрузка модуля PSReadline</strong> (например, с помощью команды 
+                        <code>Remove-Module PSReadline</code> в <strong>существующей сессии PowerShell</strong>).
+                    </div>
+                </div>
+
+                <!-- firewall.cpl -->
+                <div class="card" id="firewall-cpl">
+                    <h3>🛡️ firewall.cpl — Брандмауэр Windows</h3>
+                    <p>
+                        <code>firewall.cpl</code> — это классическая панель управления <strong>Брандмауэром Windows</strong>.
+                        Через неё можно мгновенно управлять сетевой защитой без поиска по меню.
+                    </p>
+                    <p>
+                        Также через данную панель можно детектить некоторые <strong>рейдж-клиенты</strong>, по типу <strong>Nursultan</strong>, <strong>Celestial</strong> и других.
+                    </p>
+                    <p><strong>Как открыть:</strong></p>
+                    <ol>
+                        <li><kbd>WIN + R</kbd></li>
+                        <li>Введите <code>firewall.cpl</code> и нажмите Enter</li>
+                        <li>Перейдите в <strong>Дополнительные параметры</strong> (Advanced settings)</li>
+                        <li>Выберите <strong>Правила для входящих подключений</strong> (Inbound Rules)</li>
+                    </ol>
+                    <p>
+                        <strong>Что искать:</strong> правила с нестандартными именами, открывающие порты для обхода античит-систем, 
+                        а также правила, созданные подозрительными приложениями. Часто рейдж-клиенты создают свои собственные правила 
+                        для обеспечения стабильного соединения с сервером управления.
+                    </p>
+                    <div class="alert">
+                        <strong>Совет:</strong> Обратите внимание на правила, у которых <strong>«Действие»</strong> — <em>Разрешить подключение</em>, 
+                        а <strong>«Протокол»</strong> — <em>TCP</em> или <em>UDP</em> с нестандартными номерами портов (например, 4444, 5555, 1337 и т.п.).
+                    </div>
+                </div>
+
+            </section>
 
             <!-- ====== CHECKLIST ====== -->
-            <div id="checklist" class="tab-content">
+            <section id="checklist" class="tab-content" role="tabpanel">
                 <h1>✅ Чек-лист проверки</h1>
+
                 <div class="card">
                     <p>Отмечайте выполненные пункты. Прогресс сохраняется.</p>
                     <div class="progress-bar">
                         <div class="fill" id="checklistProgress" style="width:0%"></div>
                     </div>
-                    <div id="checklistStats" style="text-align:right;font-size:0.8rem;opacity:0.6;margin-top:4px;">
-                    </div>
+                    <div id="checklistStats" style="text-align:right;font-size:0.78rem;opacity:0.60;margin-top:4px;"></div>
                     <div id="checklistContainer"></div>
                     <div class="checklist-actions">
                         <button id="exportChecklistBtn">📤 Экспорт чек-листа</button>
+                        <button id="resetChecklistBtn">🔄 Сбросить</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- ====== IMPORTANT ====== -->
-            <div id="important" class="tab-content">
+            <section id="important" class="tab-content" role="tabpanel">
                 <h1>⚠️ Важная информация</h1>
+
                 <div class="card">
                     <h3>Критические правила</h3>
-                    <ul style="padding-left:22px;">
+                    <ul>
                         <li>🚫 <strong>Никогда</strong> не скачивайте инструменты с неофициальных сайтов</li>
                         <li>🚫 Не предлагайте свои версии программ</li>
                         <li>⚠️ Фиксируйте все доказательства (видеозапись, логи)</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>Частые ошибки</h3>
-                    <ul style="padding-left:22px;">
-                        <li>❌ Пропуск скрытых папок
+                    <ul>
+                        <li>❌ Пропуск скрытых папок</li>
                         <li>❌ Игнорирование даты доступа в Everything</li>
                         <li>❌ Неправильная настройка System Informer Canary</li>
                         <li>❌ Забывают проверить корзину и <code>$Recycle.Bin</code></li>
                         <li>❌ Не смотрят историю взаимодействий с папками / файлами</li>
                         <li>❌ Смотрят неполный путь / имя файла в различных программах</li>
-                        <li>❌ Стеснение перед игроком и невнимательность при проверке игрока</li>
+                        <li>❌ Стеснение перед игроком и невнимательность при проверке</li>
                         <li>❌ Незнание наименований читов</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>Инструменты удалённого доступа</h3>
-                    <ul style="padding-left:22px;">
-                        <li><a href="https://www.dwservice.net/ru/home.html" target="_blank" rel="noopener noreferrer"
-                                style="color:var(--secondary-accent);">Dwservice</a></li>
-                        <li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer"
-                                style="color:var(--secondary-accent);">AnyDesk</a></li>
-                        <li><a href="https://github.com/rustdesk/rustdesk" target="_blank" rel="noopener noreferrer"
-                                style="color:var(--secondary-accent);">RustDesk</a></li>
+                    <ul>
+                        <li><a href="https://www.dwservice.net/ru/home.html" target="_blank" rel="noopener noreferrer" style="color:var(--accent-2);">Dwservice</a></li>
+                        <li><a href="https://anydesk.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-2);">AnyDesk</a></li>
+                        <li><a href="https://github.com/rustdesk/rustdesk" target="_blank" rel="noopener noreferrer" style="color:var(--accent-2);">RustDesk</a></li>
                     </ul>
                 </div>
-            </div>
-            <!-- ====== КРАСНЫЕ ФЛАГИ ====== -->
-            <div id="redflags" class="tab-content">
+            </section>
+
+            <!-- ====== RED FLAGS ====== -->
+            <section id="redflags" class="tab-content" role="tabpanel">
                 <h1>🚩 Красные флаги (признаки возможных читов)</h1>
+
                 <div class="card">
                     <h3>📁 Файловая система</h3>
-                    <ul style="padding-left:22px;">
-                        <li>🔴 Файлы с названиями, содержащими <code>cheat</code>, <code>hack</code>, <code>aim</code>,
-                            <code>wall</code>, <code>inject</code>.
-                        </li>
-                        <li>🔴 Странные файлы с расширениями <code>.exe</code> или <code>.dll</code>, расположенные в
-                            <code>Temp</code>, <code>AppData\Local\Temp</code>, <code>C:\Users\Public</code>.
-                        </li>
-                        <li>🔴 Наличие упаковщиков (UPX, VMProtect) в исполняемых файлах (можно проверить через PE-bear
-                            или Detect It Easy).</li>
-                        <li>🔴 Файлы с поддельными цифровыми подписями (подпись присутствует, но недействительна или
-                            выдана неизвестным издателем).</li>
-                        <li>🔴 Конфигурационные файлы читов (<code>.cfg</code>, <code>.ini</code>, <code>.json</code>) с
-                            подозрительными названиями.</li>
+                    <ul>
+                        <li>🔴 Файлы с названиями, содержащими <code>cheat</code>, <code>hack</code>, <code>aim</code>, <code>wall</code>, <code>inject</code>.</li>
+                        <li>🔴 Странные файлы с расширениями <code>.exe</code> или <code>.dll</code>, расположенные в <code>Temp</code>, <code>AppData\Local\Temp</code>, <code>C:\Users\Public</code>.</li>
+                        <li>🔴 Наличие упаковщиков (UPX, VMProtect) в исполняемых файлах.</li>
+                        <li>🔴 Файлы с поддельными цифровыми подписями.</li>
+                        <li>🔴 Конфигурационные файлы читов (<code>.cfg</code>, <code>.ini</code>, <code>.json</code>) с подозрительными названиями.</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>🧠 Память и процессы</h3>
-                    <ul style="padding-left:22px;">
-                        <li>🔴 Процессы с нестандартными именами, например <code>csgo.exe</code> в папке
-                            <code>AppData</code>.
-                        </li>
-                        <li>🔴 Процессы, запущенные из папок без прав на запись (например, <code>System32</code>) с
-                            подозрительными именами.</li>
+                    <ul>
+                        <li>🔴 Процессы с нестандартными именами, например <code>csgo.exe</code> в папке <code>AppData</code>.</li>
+                        <li>🔴 Процессы, запущенные из папок без прав на запись (например, <code>System32</code>) с подозрительными именами.</li>
                         <li>🔴 В памяти csrss.exe найдены пути к .exe или .dll, которые не являются системными.</li>
-                        <li>🔴 В памяти игрового процесса (cs2.exe) обнаружены строки с названиями читов или
-                            URL-адресами для связи с сервером читов.</li>
+                        <li>🔴 В памяти игрового процесса (cs2.exe) обнаружены строки с названиями читов или URL-адресами.</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>📜 Логи и артефакты</h3>
-                    <ul style="padding-left:22px;">
-                        <li>🔴 В JournalTrace зафиксированы массовые удаления .exe или .dll сразу после запуска CS2.
-                        </li>
-                        <li>🔴 В Prefetch есть записи о запуске подозрительных .exe, которые сейчас отсутствуют на
-                            диске.</li>
-                        <li>🔴 В реестре есть ключи с именами читов (например, <code>Software\Aimware</code>,
-                            <code>Software\Vape</code>).
-                        </li>
-                        <li>🔴 В ShellBag есть посещённые папки, ведущие на сайты с читами или на папки с названиями
-                            типа <code>cheats</code>, <code>injects</code>.</li>
+                    <ul>
+                        <li>🔴 В JournalTrace зафиксированы массовые удаления .exe или .dll сразу после запуска CS2.</li>
+                        <li>🔴 В Prefetch есть записи о запуске подозрительных .exe, которые сейчас отсутствуют на диске.</li>
+                        <li>🔴 В реестре есть ключи с именами читов (например, <code>Software\Aimware</code>, <code>Software\Vape</code>).</li>
+                        <li>🔴 В ShellBag есть посещённые папки, ведущие на сайты с читами или на папки с названиями типа <code>cheats</code>, <code>injects</code>.</li>
                         <li>🔴 В BAM Parser есть записи о запуске файлов, которые уже удалены с диска.</li>
                     </ul>
                 </div>
+
                 <div class="card">
                     <h3>🌐 Сеть</h3>
-                    <ul style="padding-left:22px;">
-                        <li>🔴 Активные сетевые соединения на нестандартные порты (например, 27015, 27016 — игровые, но
-                            если есть на 4444, 1337, 5555 — подозрительно).</li>
+                    <ul>
+                        <li>🔴 Активные сетевые соединения на нестандартные порты (например, 4444, 1337, 5555).</li>
                         <li>🔴 Наличие в памяти строк с IP-адресами, не относящимися к игровым серверам.</li>
                     </ul>
                 </div>
-            </div>
+            </section>
 
-            <!-- ====== ГЛОССАРИЙ ====== -->
-            <div id="glossary" class="tab-content">
+            <!-- ====== CHEAT TYPES ====== -->
+            <section id="cheattypes" class="tab-content" role="tabpanel">
+                <h1>🎯 Типы читов и их признаки</h1>
+
+                <div class="card">
+                    <h3>🎯 Aimbot (аим)</h3>
+                    <p>Автоматическое наведение прицела на противника.</p>
+                    <p><strong>Признаки:</strong> неестественно резкие «доводки», щелчки прицела точно в голову, идеальный трекинг сквозь дым.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🧱 Wallhack / ESP</h3>
+                    <p>Отображение противников, их HP, оружия и предметов сквозь стены.</p>
+                    <p><strong>Признаки:</strong> префайр по невидимым врагам, реакция на пуш до появления в зоне видимости, взгляд «сквозь» стены.</p>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Triggerbot</h3>
+                    <p>Автоматический выстрел при наведении прицела на врага.</p>
+                    <p><strong>Признаки:</strong> мгновенная реакция (менее 100 мс), стабильные однопульные килы при пересечении прицела.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🐰 Bhop / Movement</h3>
+                    <p>Идеальные банни-хопы и авто-стрейф.</p>
+                    <p><strong>Признаки:</strong> абсолютно стабильная скорость в серии прыжков, невозможная вручную синхронизация.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📡 Radar / Spread</h3>
+                    <p>Раскрытие позиций на радаре, контроль разброса.</p>
+                    <p><strong>Признаки:</strong> ротации «на опережение», знание позиций без информации от команды.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🔌 DMA / Hardware</h3>
+                    <p>Аппаратные читы через отдельное устройство. Самые сложные для обнаружения — см. вкладку <strong>TIER 1</strong>.</p>
+                    <p><strong>Признаки:</strong> отсутствие программных следов при явной игре с ESP/aim, второй ПК, карта захвата.</p>
+                </div>
+
+                <div class="alert">
+                    Названия читов полезно знать для поиска по файлам и реестру: Aimware, Neverlose, Vape, Fatality, Osiris, Nixware, Gamesense и др.
+                </div>
+            </section>
+
+            <!-- ====== GLOSSARY ====== -->
+            <section id="glossary" class="tab-content" role="tabpanel">
                 <h1>📖 Глоссарий терминов</h1>
+
                 <div class="card">
                     <h3>🔹 USN Journal (Update Sequence Number Journal)</h3>
-                    <p>Журнал изменений файловой системы NTFS. Фиксирует все изменения (создание, удаление,
-                        переименование, изменение атрибутов). Используется для восстановления истории файлов даже после
-                        их удаления.</p>
+                    <p>Журнал изменений файловой системы NTFS. Фиксирует все изменения (создание, удаление, переименование, изменение атрибутов). Используется для восстановления истории файлов даже после их удаления.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 MFT (Master File Table)</h3>
-                    <p>Главная таблица файлов в NTFS. Содержит метаданные каждого файла и папки на томе. Анализ MFT
-                        позволяет находить скрытые или удалённые записи.</p>
+                    <p>Главная таблица файлов в NTFS. Содержит метаданные каждого файла и папки на томе. Анализ MFT позволяет находить скрытые или удалённые записи.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 ShellBags</h3>
-                    <p>Записи в реестре Windows, хранящие историю открытия папок через проводник (размер окна,
-                        положение, представление). Могут сохранять информацию о папках, которые уже удалены.</p>
+                    <p>Записи в реестре Windows, хранящие историю открытия папок через проводник (размер окна, положение, представление). Могут сохранять информацию о папках, которые уже удалены.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 Prefetch</h3>
-                    <p>Механизм Windows для ускорения загрузки приложений. Хранит информацию о запущенных .exe (путь,
-                        количество запусков, дата, загруженные модули). Находится в
-                        <code>C:\Windows\Prefetch\*.pf</code>.
-                    </p>
+                    <p>Механизм Windows для ускорения загрузки приложений. Хранит информацию о запущенных .exe (путь, количество запусков, дата, загруженные модули). Находится в <code>C:\Windows\Prefetch\*.pf</code>.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 BAM (Background Activity Moderator)</h3>
-                    <p>Артефакт реестра (HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings). Хранит
-                        время последнего запуска каждого .exe, даже если файл уже удалён.</p>
+                    <p>Артефакт реестра (HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings). Хранит время последнего запуска каждого .exe, даже если файл уже удалён.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 CSRSS (Client Server Runtime Subsystem)</h3>
-                    <p>Системный процесс Windows, отвечающий за управление консольными окнами и завершением процессов. В
-                        его памяти могут оставаться строки с путями к запущенным приложениям.</p>
+                    <p>Системный процесс Windows, отвечающий за управление консольными окнами и завершением процессов. В его памяти могут оставаться строки с путями к запущенным приложениям.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 Инжект (Code Injection)</h3>
-                    <p>Внедрение кода (обычно DLL) в адресное пространство другого процесса. Читы часто используют
-                        инжект для модификации игровой памяти.</p>
+                    <p>Внедрение кода (обычно DLL) в адресное пространство другого процесса. Читы часто используют инжект для модификации игровой памяти.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 Спуфинг (Spoofing)</h3>
-                    <p>Подмена аппаратных идентификаторов (HWID) с целью обхода банов. Читеры используют специальные
-                        утилиты для изменения серийных номеров дисков, MAC-адресов и т.д.</p>
+                    <p>Подмена аппаратных идентификаторов (HWID) с целью обхода банов. Читеры используют специальные утилиты для изменения серийных номеров дисков, MAC-адресов и т.д.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 DMA (Direct Memory Access)</h3>
-                    <p>Прямой доступ к памяти, используемый в аппаратных читах (например, на основе FPGA). Позволяет
-                        читать память компьютера без использования ПО, что затрудняет детекцию.</p>
+                    <p>Прямой доступ к памяти, используемый в аппаратных читах (например, на основе FPGA). Позволяет читать память компьютера без использования ПО, что затрудняет детекцию.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 PE-файл (Portable Executable)</h3>
-                    <p>Формат исполняемых файлов в Windows (.exe, .dll, .sys). Содержит заголовки, секции кода и данных,
-                        таблицы импорта/экспорта.</p>
+                    <p>Формат исполняемых файлов в Windows (.exe, .dll, .sys). Содержит заголовки, секции кода и данных, таблицы импорта/экспорта.</p>
                 </div>
+
                 <div class="card">
                     <h3>🔹 Цифровая подпись</h3>
-                    <p>Электронная метка, подтверждающая авторство и целостность файла. Проверяется через сертификаты
-                        (например, от Microsoft, Valve). Подозрительно, если подпись отсутствует, недействительна или
-                        выдана неизвестным издателем.</p>
+                    <p>Электронная метка, подтверждающая авторство и целостность файла. Проверяется через сертификаты (например, от Microsoft, Valve). Подозрительно, если подпись отсутствует, недействительна или выдана неизвестным издателем.</p>
                 </div>
-            </div>
-        </div>
+            </section>
+
+            <!-- ====== EXPERT ====== -->
+            <section id="expert" class="tab-content" role="tabpanel">
+                <h1>🧠 Советы эксперта по форензике</h1>
+
+                <div class="card">
+                    <h3>🔬 Анализ дампов памяти с помощью strings и YARA</h3>
+                    <p>После снятия дампа процесса (например, <code>cs2.exe</code> или <code>csrss.exe</code>) используй утилиту <strong>strings</strong> (из Sysinternals) для извлечения всех текстовых строк. Затем прогони результат через набор <strong>YARA-правил</strong>, разработанных для обнаружения сигнатур читов.</p>
+                    <p><strong>Пример команды:</strong></p>
+                    <pre><code>strings -n 8 cs2.dmp > strings.txt
+        yara -r cheat_rules.yara cs2.dmp</code> <button class="copy-btn" data-copy="strings -n 8 cs2.dmp > strings.txt\nyara -r cheat_rules.yara cs2.dmp">Копировать</button></pre>
+                    <p>Ищи URL-адреса, пути к конфигам, названия проектов (например, "aimware", "neverlose").</p>
+                </div>
+
+                <div class="card">
+                    <h3>🛡️ Проверка драйверов и ядра</h3>
+                    <p>Используй <strong>DriverView</strong> (NirSoft) или <strong>Autoruns</strong> (Sysinternals) для просмотра загруженных драйверов. Обрати внимание на:</p>
+                    <ul>
+                        <li>Драйверы, подписанные неизвестными издателями.</li>
+                        <li>Драйверы, расположенные в <code>C:\Windows\Temp</code> или пользовательских папках.</li>
+                        <li>Наличие драйверов с именами, похожими на системные, но с нестандартным размером.</li>
+                    </ul>
+                    <p>Также проверь состояние <strong>Secure Boot</strong> и <strong>Hyper-V</strong> – отключение этих функций может указывать на использование низкоуровневых читов.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 Сетевой анализ</h3>
+                    <p>Запусти <code>netstat -anob</code> и проверь, какие процессы открывают сокеты на нестандартные порты. Читы часто используют порты 4444, 5555, 6666, 8080 и т.п. для связи с сервером управления.</p>
+                    <p>Используй <strong>Wireshark</strong> для захвата трафика и поиска пакетов, содержащих игровые данные (например, координаты противников). Это требует глубокого анализа, но может выявить инжекты трафика.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Артефакты Windows: Amcache, Shimcache, SRUM</h3>
+                    <p>Не ограничивайся только Prefetch и BAM. Проверь:</p>
+                    <ul>
+                        <li><strong>Amcache.hve</strong> – хранит информацию о запусках программ (путь, хеш, версия). Расположен в <code>C:\Windows\AppCompat\Programs\Amcache.hve</code>.</li>
+                        <li><strong>Shimcache</strong> (AppCompatCache) – записывает время запуска .exe, даже если файл удалён. Извлекается через <code>Reg Query</code> или утилиты.</li>
+                        <li><strong>SRUM</strong> (System Resource Usage Monitor) – ведёт журнал использования приложений и сети. Можно проанализировать через <strong>SRUM Dump</strong>.</li>
+                    </ul>
+                    <p>Эти артефакты могут дать информацию о запущенных файлах, которые уже были удалены с диска.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Работа с MFT и USN Journal</h3>
+                    <p>Помимо JournalTrace, используй <strong>MFT Explorer</strong> или <strong>NTFS Log Tracker</strong> для прямого анализа MFT. Ищи:</p>
+                    <ul>
+                        <li>Файлы с временными метками, не соответствующими системным событиям.</li>
+                        <li>Имена файлов, содержащие <code>tmp</code>, <code>dat</code>, <code>cfg</code> в подозрительных папках.</li>
+                        <li>Скрытые потоки данных (ADS) – читы могут прятать конфиги в альтернативных потоках.</li>
+                    </ul>
+                    <p>Для проверки ADS используй <code>dir /r</code> или инструмент <strong>Streams</strong> из Sysinternals.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🧩 Список популярных читов для поиска по сигнатурам</h3>
+                    <p>При поиске по файловой системе и реестру используй следующие названия (неполный список):</p>
+                    <ul>
+                        <li><strong>Aimware</strong> – один из старейших платных читов.</li>
+                        <li><strong>Neverlose</strong> – популярный чит с системой подписки.</li>
+                        <li><strong>Vape</strong> – известен своим обфускатором.</li>
+                        <li><strong>Fatality</strong> – высокоуровневый чит для CS:GO/CS2.</li>
+                        <li><strong>Osiris</strong> – бесплатный опенсорсный чит.</li>
+                        <li><strong>Nixware</strong> – ещё один платный чит.</li>
+                        <li><strong>Gamesense</strong> – премиум-решение.</li>
+                        <li><strong>Rage</strong> – часто используется в названиях конфигов.</li>
+                    </ul>
+                    <p>Также ищи фрагменты строк: <code>inject</code>, <code>overlay</code>, <code>esp</code>, <code>triggerbot</code>, <code>rcs</code>.</p>
+                </div>
+            </section>
+
+        </main>
     </div>
 
     <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
-    <div class="modal-overlay" id="toolModal">
+    <div class="modal-overlay" id="toolModal" role="dialog" aria-modal="true">
         <div class="modal-box">
-            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <button class="close-modal" id="closeModalBtn" aria-label="Закрыть">&times;</button>
             <h2 id="modalTitle">Название</h2>
             <div id="modalBody"></div>
         </div>
@@ -1704,225 +1887,332 @@
     <!-- ===== КНОПКА "НАВЕРХ" ===== -->
     <button class="go-top" id="goTopBtn" aria-label="Наверх">⬆</button>
 
+    <!-- ============================================================
+    JAVASCRIPT (полностью рабочий)
+    ============================================================ -->
     <script>
-        // ===== ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН =====
+        // ============================================================
+        // ДАННЫЕ ДЛЯ МОДАЛЬНЫХ ОКОН
+        // ============================================================
         const toolDetails = {
             sstool: {
                 title: 'SSTool',
                 body: `
-                    <p><strong>SSTool</strong> - инструмент для анализа и парсинга данных.</p>
-                    <p>Можем юзать сборку очень хороший утилит для проверки (изначально предназначенной для майнкрафта, но для проверки на серваке в КС2 тоже вполне подойдет).</p>
-                    <p><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank" rel="noopener noreferrer">Релизы SSTool на GitHub</a></p>
-                `
+                        <p><strong>SSTool</strong> — инструмент для анализа и парсинга данных.</p>
+                        <p>Можем юзать сборку очень хороших утилит для проверки (изначально предназначенной для майнкрафта, но для проверки на серваке в КС2 тоже вполне подойдёт).</p>
+                        <p><a href="https://github.com/Orbdiff/SSTool/releases" target="_blank" rel="noopener noreferrer">Релизы SSTool на GitHub</a></p>
+                    `
             },
             bam: {
                 title: 'BAM Parser',
                 body: `
-                    <p><strong>BAM Parser</strong> (Анализатор BAM) — извлекает пути и время последнего запуска из артефакта BAM.</p>
-                    <p><strong>Что он делает?</strong></p>
-                    <ul>
-                        <li>Анализирует пути исполняемых файлов из ключа реестра BAM.</li>
-                        <li>Преобразует путь из формата <code>\\Device\\HarddiskVolume&lt;номер&gt;\\</code> в букву диска.</li>
-                        <li>Получает время последнего запуска файла.</li>
-                        <li>Определяет, был ли файл запущен в последней сессии пользователя.</li>
-                        <li>Проверяет цифровую подпись для каждого найденного файла.</li>
-                        <li>Сообщает <strong>«Удален»</strong>, если файл не найден.</li>
-                        <li>Определяет <strong>конкретные цифровые подписи</strong> (например, Slinky и Vape).</li>
-                        <li>Применяет <strong>общие (Generic) проверки</strong> к каждому найденному файлу.</li>
-                    </ul>
-                    <p><strong>Примечание:</strong> Проверки <code>A2</code> и <code>F</code> могут иногда давать «ложные срабатывания».</p>
-                    <p><strong>ВАЖНО:</strong></p>
-                    <ul>
-                        <li>Скопируйте путь из ячейки: <strong>Ctrl + ЛКМ</strong>.</li>
-                        <li>Если путь подсвечен красным — нажмите для деталей.</li>
-                        <li>Фильтры: только неподписанные / только с общими проверками / только текущая сессия.</li>
-                    </ul>
-                    <p><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">Репозиторий BAM Parser</a></p>
-                `
+                        <p><strong>BAM Parser</strong> — извлекает пути и время последнего запуска из артефакта BAM.</p>
+                        <p><strong>Что он делает?</strong></p>
+                        <ul>
+                            <li>Анализирует пути исполняемых файлов из ключа реестра BAM.</li>
+                            <li>Преобразует путь из формата <code>\\Device\\HarddiskVolume&lt;номер&gt;\\</code> в букву диска.</li>
+                            <li>Получает время последнего запуска файла.</li>
+                            <li>Определяет, был ли файл запущен в последней сессии пользователя.</li>
+                            <li>Проверяет цифровую подпись для каждого найденного файла.</li>
+                            <li>Сообщает <strong>«Удален»</strong>, если файл не найден.</li>
+                            <li>Определяет <strong>конкретные цифровые подписи</strong> (например, Slinky и Vape).</li>
+                            <li>Применяет <strong>общие проверки</strong> к каждому найденному файлу.</li>
+                        </ul>
+                        <p><strong>Примечание:</strong> Проверки <code>A2</code> и <code>F</code> могут иногда давать «ложные срабатывания».</p>
+                        <p><strong>ВАЖНО:</strong></p>
+                        <ul>
+                            <li>Скопируйте путь из ячейки: <strong>Ctrl + ЛКМ</strong>.</li>
+                            <li>Если путь подсвечен красным — нажмите для деталей.</li>
+                            <li>Фильтры: только неподписанные / только с общими проверками / только текущая сессия.</li>
+                        </ul>
+                        <p><a href="https://github.com/spokwn/BAM-parser" target="_blank" rel="noopener noreferrer">Репозиторий BAM Parser</a></p>
+                    `
             },
             sysinformer: {
                 title: 'System Informer',
                 body: `
-                    <p><strong>System Informer</strong> (ранее Process Hacker) — используйте Canary-сборку.</p>
-                    <p><strong>Инструкция:</strong></p>
-                    <ul>
-                        <li>Запустите с правами администратора</li>
-                        <li>Options → Enable Kernel-Mode Driver</li>
-                        <li>Дважды кликните по процессу → Memory → Options → Strings</li>
-                        <li>Установите минимум 4 символа, включите <code>Extend Unicode</code> и <code>Mapped</code></li>
-                    </ul>
-                    <p><a href="https://systeminformer.sourceforge.io/canary" target="_blank" rel="noopener noreferrer">Скачать Canary</a></p>
-                `
+                        <p><strong>System Informer</strong> (ранее Process Hacker) — используйте Canary-сборку.</p>
+                        <p><strong>Инструкция:</strong></p>
+                        <ul>
+                            <li>Запустите с правами администратора</li>
+                            <li>Options → Enable Kernel-Mode Driver</li>
+                            <li>Дважды кликните по процессу → Memory → Options → Strings</li>
+                            <li>Установите минимум 4 символа, включите <code>Extend Unicode</code> и <code>Mapped</code></li>
+                        </ul>
+                        <p><a href="https://systeminformer.sourceforge.io/canary" target="_blank" rel="noopener noreferrer">Скачать Canary</a></p>
+                    `
             },
             prefetchview: {
                 title: 'PrefetchView++',
                 body: `
-                    <p><strong>PrefetchView++</strong> — парсит префетч и позволяет сортировать по сигнатурам, находить ненайденные файлы, просматривать модули.</p>
-                    <p>Проверяет базовые байпасы: поток sechost.dll, SysMain, логгирование префетча.</p>
-                    <p><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank" rel="noopener noreferrer">Релиз v1.5.3</a></p>
-                `
+                        <p><strong>PrefetchView++</strong> — парсит префетч и позволяет сортировать по сигнатурам, находить ненайденные файлы, просматривать модули.</p>
+                        <p>Проверяет базовые байпасы: поток sechost.dll, SysMain, логгирование префетча.</p>
+                        <p><a href="https://github.com/Orbdiff/PrefetchView/releases/tag/v1.5.3" target="_blank" rel="noopener noreferrer">Релиз v1.5.3</a></p>
+                    `
             },
             userassist: {
                 title: 'UserAssistsView',
                 body: `
-                    <p><strong>UserAssistsView</strong> (NirSoft) — парсер артефакта UserAssist.</p>
-                    <ul>
-                        <li>Анализирует USNJrnl на Hex Replace</li>
-                        <li>Включает правила YARA для обнаружения читов</li>
-                        <li>Классифицирует подписи: <code>Signed, Unsigned, Cheat, Fake Signature, Not Found</code></li>
-                    </ul>
-                    <p><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
-                `
+                        <p><strong>UserAssistsView</strong> (NirSoft) — парсер артефакта UserAssist.</p>
+                        <ul>
+                            <li>Анализирует USNJrnl на Hex Replace</li>
+                            <li>Включает правила YARA для обнаружения читов</li>
+                            <li>Классифицирует подписи: <code>Signed, Unsigned, Cheat, Fake Signature, Not Found</code></li>
+                        </ul>
+                        <p><a href="https://www.nirsoft.net/utils/userassist_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
+                    `
             },
             winprefetch: {
                 title: 'WinPrefetchView',
                 body: `
-                    <p><strong>WinPrefetchView</strong> — анализ Prefetch-файлов (.pf).</p>
-                    <p>Извлекает: имя процесса, путь, количество запусков, дату, список зависимостей.</p>
-                    <p>Анализирует <code>cmd.exe</code>, <code>conhost.exe</code>, <code>consent.exe</code> (UAC).</p>
-                    <p><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
-                `
+                        <p><strong>WinPrefetchView</strong> — анализ Prefetch-файлов (.pf).</p>
+                        <p>Извлекает: имя процесса, путь, количество запусков, дату, список зависимостей.</p>
+                        <p>Анализирует <code>cmd.exe</code>, <code>conhost.exe</code>, <code>consent.exe</code> (UAC).</p>
+                        <p><a href="https://www.nirsoft.net/utils/win_prefetch_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
+                    `
             },
             journaltrace: {
                 title: 'Journal Trace',
                 body: `
-                    <p><strong>JournalTrace</strong> — инструмент для анализа <code>$J</code> (журнала изменений NTFS), который позволяет отслеживать создание, изменение, переименование и удаление файлов.</p>
-                    <p>В отличие от стандартных логов Windows, USN Journal работает на уровне файловой системы и фиксирует почти каждое изменение, включая действия с уже удалёнными файлами.</p>
-
-                    <p><strong>Начало работы</strong></p>
-                    <ul>
-                        <li><strong>Drive → Select</strong> — выбор диска</li>
-                        <li><strong>Drive → Scan</strong> — сканирование</li>
-                        <li><strong>Layout → Data Grid</strong> или <strong>Directory Tree</strong> — выбор режима отображения</li>
-                    </ul>
-
-                    <p><strong>Data Grid</strong></p>
-                    <p>В режиме <strong>Data Grid</strong> доступна фильтрация по параметрам <code>Directory</code>, <code>Name</code>, <code>Date</code> и <code>Reason</code>. Это позволяет искать файлы по названию и расширению, а также видеть события открытия, изменения, удаления и переименования.</p>
-                    <p><em>Пример:</em> ищем <code>.exe</code> и сортируем по <code>Date</code>. Обнаружение событий <code>File Deleted</code> или <code>File Deleted | Close</code>.</p>
-                    <p>Также возможны события переименования: <code>Rename: Old name → Rename: New name</code>. Нажав ПКМ по записи, можно просмотреть подробную информацию.</p>
-
-                    <p><strong>Directory Tree</strong></p>
-                    <p>В режиме <strong>Directory Tree</strong> выбираем диск <code>C:</code> и нужную папку, чтобы просмотреть историю взаимодействий с файлами внутри неё. Здесь можно проверить <code>$Recycle.Bin</code> (корзина) на наличие удалённых файлов, а также проанализировать очистку других папок в <code>C:/</code>.</p>
-                    <p>Отдельное внимание стоит уделить папке <strong>Prefetch</strong> — удаление файлов <code>.pf</code> может указывать на попытку скрыть факт выполнения (execution) приложения.</p>
-
-                    <p><strong>Итог</strong></p>
-                    <p>JournalTrace позволяет восстановить полную историю любого файла, даже если он был окончательно удалён. Это делает инструмент незаменимым для глубокого анализа и проведения расследований.</p>
-
-                    <p><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank" rel="noopener noreferrer">Релиз 1.2</a></p>
-                `
+                        <p><strong>JournalTrace</strong> — инструмент для анализа <code>$J</code> (журнала изменений NTFS), который позволяет отслеживать создание, изменение, переименование и удаление файлов.</p>
+                        <p>В отличие от стандартных логов Windows, USN Journal работает на уровне файловой системы и фиксирует почти каждое изменение, включая действия с уже удалёнными файлами.</p>
+                        <p><strong>Начало работы</strong></p>
+                        <ul>
+                            <li><strong>Drive → Select</strong> — выбор диска</li>
+                            <li><strong>Drive → Scan</strong> — сканирование</li>
+                            <li><strong>Layout → Data Grid</strong> или <strong>Directory Tree</strong> — выбор режима отображения</li>
+                        </ul>
+                        <p><strong>Data Grid</strong></p>
+                        <p>В режиме <strong>Data Grid</strong> доступна фильтрация по параметрам <code>Directory</code>, <code>Name</code>, <code>Date</code> и <code>Reason</code>. Это позволяет искать файлы по названию и расширению, а также видеть события открытия, изменения, удаления и переименования.</p>
+                        <p><em>Пример:</em> ищем <code>.exe</code> и сортируем по <code>Date</code>. Обнаружение событий <code>File Deleted</code> или <code>File Deleted | Close</code>.</p>
+                        <p>Также возможны события переименования: <code>Rename: Old name → Rename: New name</code>. Нажав ПКМ по записи, можно просмотреть подробную информацию.</p>
+                        <p><strong>Directory Tree</strong></p>
+                        <p>В режиме <strong>Directory Tree</strong> выбираем диск <code>C:</code> и нужную папку, чтобы просмотреть историю взаимодействий с файлами внутри неё. Здесь можно проверить <code>$Recycle.Bin</code> (корзина) на наличие удалённых файлов, а также проанализировать очистку других папок в <code>C:/</code>.</p>
+                        <p>Отдельное внимание стоит уделить папке <strong>Prefetch</strong> — удаление файлов <code>.pf</code> может указывать на попытку скрыть факт выполнения (execution) приложения.</p>
+                        <p><strong>Итог</strong></p>
+                        <p>JournalTrace позволяет восстановить полную историю любого файла, даже если он был окончательно удалён. Это делает инструмент незаменимым для глубокого анализа и проведения расследований.</p>
+                        <p><a href="https://github.com/spokwn/JournalTrace/releases/tag/1.2" target="_blank" rel="noopener noreferrer">Релиз 1.2</a></p>
+                    `
             },
             shellbag: {
                 title: 'ShellBagAnalyzer',
                 body: `
-                    <p><strong>ShellBagAnalyzer</strong> — извлекает и анализирует ShellBags (история открытых папок).</p>
-                    <p>Показывает посещённые и удалённые папки. При чистке создаётся <code>shellbag_analyzer_cleaner.ini</code>.</p>
-                    <p><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php" target="_blank" rel="noopener noreferrer">Скачать</a></p>
-                `
+                        <p><strong>ShellBagAnalyzer</strong> — извлекает и анализирует ShellBags (история открытых папок).</p>
+                        <p>Показывает посещённые и удалённые папки. При чистке создаётся <code>shellbag_analyzer_cleaner.ini</code>.</p>
+                        <p><a href="https://privazer.com/en/download-shellbag-analyzer-shellbag-cleaner.php" target="_blank" rel="noopener noreferrer">Скачать</a></p>
+                    `
             },
             everything: {
                 title: 'Everything',
                 body: `
-                    <p><strong>Everything</strong> — мгновенный поиск файлов в Windows.</p>
-                    <ul>
-                        <li>Логические операторы: AND (пробел), OR (|), NOT (!)</li>
-                        <li>Фильтры по типу, регулярные выражения</li>
-                        <li>Поиск по размеру <code>size:>10mb</code>, дате <code>dm:>2026-06-04</code>, атрибутам <code>attrib:h</code></li>
-                    </ul>
-                    <p><a href="https://www.voidtools.com/everything-1.5a/" target="_blank" rel="noopener noreferrer">Скачать Everything 1.5a</a></p>
-                    <p><a href="https://www.voidtools.com/ru-ru/support/everything/searching/" target="_blank" rel="noopener noreferrer">Полная справка по поиску</a></p>
-                `
+                        <p><strong>Everything</strong> — мгновенный поиск файлов в Windows.</p>
+                        <ul>
+                            <li>Логические операторы: AND (пробел), OR (|), NOT (!)</li>
+                            <li>Фильтры по типу, регулярные выражения</li>
+                            <li>Поиск по размеру <code>size:>10mb</code>, дате <code>dm:>2026-06-04</code>, атрибутам <code>attrib:h</code></li>
+                        </ul>
+                        <p><a href="https://www.voidtools.com/everything-1.5a/" target="_blank" rel="noopener noreferrer">Скачать Everything 1.5a</a></p>
+                        <p><a href="https://www.voidtools.com/ru-ru/support/everything/searching/" target="_blank" rel="noopener noreferrer">Полная справка по поиску</a></p>
+                    `
             },
             lastactivity: {
                 title: 'LastActivityView',
                 body: `
-                    <p><strong>LastActivityView</strong> (NirSoft) — сводная таблица последних действий пользователя.</p>
-                    <ul>
-                        <li>Собирает данные из Prefetch, UserAssist, BAM, реестра</li>
-                        <li>Фильтрация по типу события, имени файла и др.</li>
-                    </ul>
-                    <p><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
-                `
+                        <p><strong>LastActivityView</strong> (NirSoft) — сводная таблица последних действий пользователя.</p>
+                        <ul>
+                            <li>Собирает данные из Prefetch, UserAssist, BAM, реестра</li>
+                            <li>Фильтрация по типу события, имени файла и др.</li>
+                        </ul>
+                        <p><a href="https://www.nirsoft.net/utils/last_activity_view.html" target="_blank" rel="noopener noreferrer">Официальная страница</a></p>
+                    `
             }
         };
 
-        // ===== ТЕМА =====
+        // ============================================================
+        // СОСТОЯНИЕ
+        // ============================================================
+        let currentTab = 'overview';
+        let searchQuery = '';
+
+        // ============================================================
+        // DOM-Ссылки
+        // ============================================================
         const themeToggle = document.getElementById('themeToggle');
+        const goTopBtn = document.getElementById('goTopBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+        const searchCount = document.getElementById('searchCount');
+        const modalOverlay = document.getElementById('toolModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const readProgress = document.getElementById('readProgress');
+        const sidebarList = document.getElementById('sidebarList');
+        const checklistContainer = document.getElementById('checklistContainer');
+        const checklistProgress = document.getElementById('checklistProgress');
+        const checklistStats = document.getElementById('checklistStats');
+        const tabsWrapper = document.getElementById('tabsWrapper');
+
+        // ============================================================
+        // ТЕМА
+        // ============================================================
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
 
         themeToggle.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
+            const cur = document.documentElement.getAttribute('data-theme');
+            const next = cur === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
             themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
         });
 
-        // ===== КНОПКА "НАВЕРХ" =====
-        const goTopBtn = document.getElementById('goTopBtn');
+        // ============================================================
+        // КНОПКА "НАВЕРХ"
+        // ============================================================
         window.addEventListener('scroll', () => {
             goTopBtn.classList.toggle('visible', window.scrollY > 300);
-        });
+        }, { passive: true });
+
         goTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'auto' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ===== ОГЛАВЛЕНИЕ =====
+        // ============================================================
+        // ПРОГРЕСС ЧТЕНИЯ
+        // ============================================================
+        function updateReadProgress() {
+            const h = document.documentElement;
+            const scrollable = h.scrollHeight - h.clientHeight;
+            const pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+            readProgress.style.width = pct + '%';
+        }
+        window.addEventListener('scroll', updateReadProgress, { passive: true });
+        window.addEventListener('resize', updateReadProgress);
+        updateReadProgress();
+
+        // ============================================================
+        // ВКЛАДКИ
+        // ============================================================
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        function switchTab(tabId) {
+            tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+            tabContents.forEach(c => c.classList.toggle('active', c.id === tabId));
+            currentTab = tabId;
+            buildToc();
+            if (searchQuery) performSearch(searchQuery);
+            setTimeout(updateScrollSpy, 50);
+            // Прокручиваем к активной вкладке
+            const activeBtn = document.querySelector(`.tab-btn.active`);
+            if (activeBtn && tabsWrapper) {
+                const offset = activeBtn.offsetLeft - 20;
+                tabsWrapper.scrollTo({ left: offset, behavior: 'smooth' });
+            }
+        }
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                if (tabId) switchTab(tabId);
+            });
+        });
+
+        // ============================================================
+        // ОГЛАВЛЕНИЕ (TOC)
+        // ============================================================
         function buildToc() {
             const activeTab = document.querySelector('.tab-content.active');
-            if (!activeTab) return;
-            const headings = activeTab.querySelectorAll('h3, h4');
+            if (!activeTab) {
+                sidebarList.innerHTML = '<li style="opacity:0.6;">Нет разделов</li>';
+                return;
+            }
+            const headings = activeTab.querySelectorAll('h3[id], h4[id]');
+            if (!headings.length) {
+                sidebarList.innerHTML = '<li style="opacity:0.6;">Нет разделов</li>';
+                return;
+            }
             let html = '';
             headings.forEach(h => {
                 const level = h.tagName.toLowerCase();
-                const id = h.id || h.textContent.replace(/[^a-zA-Z0-9]/g, '_');
-                if (!h.id) h.id = id;
                 const cls = level === 'h4' ? 'sub-item' : '';
-                html += `<li class="${cls}"><a onclick="scrollToSection('${id}')">${h.textContent}</a></li>`;
+                const label = h.textContent.trim();
+                html += `<li class="${cls}"><a onclick="scrollToSection('${h.id}')">${label}</a></li>`;
             });
-            document.getElementById('sidebarList').innerHTML = html || '<li style="opacity:0.6;">Нет разделов</li>';
+            sidebarList.innerHTML = html;
         }
 
-        // ===== ВКЛАДКИ =====
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const target = this.dataset.tab;
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.getElementById(target).classList.add('active');
-                buildToc();
-                const searchInput = document.getElementById('searchInput');
-                if (searchInput.value.trim()) {
-                    performSearch(searchInput.value.trim());
-                }
-            });
-        });
+        // ============================================================
+        // SCROLL-TO-SECTION
+        // ============================================================
+        window.scrollToSection = function(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                const offset = 90;
+                const top = el.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        };
 
-        // ===== ПОИСК =====
-        const searchInput = document.getElementById('searchInput');
-        const searchClear = document.getElementById('searchClear');
-        const searchCount = document.getElementById('searchCount');
+        // ============================================================
+        // SCROLL-SPY
+        // ============================================================
+        function updateScrollSpy() {
+            const activeTab = document.querySelector('.tab-content.active');
+            if (!activeTab) return;
+            const headings = [...activeTab.querySelectorAll('h3[id], h4[id]')];
+            if (!headings.length) return;
+            const offset = 110;
+            let currentId = headings[0].id;
+            for (const hd of headings) {
+                const rect = hd.getBoundingClientRect();
+                if (rect.top - offset <= 0) currentId = hd.id;
+            }
+            sidebarList.querySelectorAll('a').forEach(a => {
+                const onclick = a.getAttribute('onclick') || '';
+                a.classList.toggle('active', onclick.includes("'" + currentId + "'"));
+            });
+        }
+
+        window.addEventListener('scroll', updateScrollSpy, { passive: true });
+
+        // ============================================================
+        // ПОИСК
+        // ============================================================
+        function clearHighlights() {
+            document.querySelectorAll('mark.search-hl').forEach(m => {
+                const parent = m.parentNode;
+                parent.replaceChild(document.createTextNode(m.textContent), m);
+                parent.normalize();
+            });
+        }
 
         function performSearch(query) {
-            if (!query) {
-                document.querySelectorAll('.card').forEach(c => {
-                    c.classList.remove('hidden', 'highlight');
-                });
+            searchQuery = query;
+            const q = query.trim().toLowerCase();
+
+            document.querySelectorAll('.card').forEach(c => {
+                c.classList.remove('hidden', 'highlight');
+            });
+
+            if (!q) {
                 searchCount.textContent = '';
                 searchClear.classList.remove('visible');
+                clearHighlights();
                 return;
             }
-            const lowerQuery = query.toLowerCase();
+
             let totalMatches = 0;
             let firstTabWithMatches = null;
+
             document.querySelectorAll('.tab-content').forEach(tab => {
                 const cards = tab.querySelectorAll('.card');
                 let tabMatches = 0;
                 cards.forEach(card => {
                     const text = card.textContent.toLowerCase();
-                    const match = text.includes(lowerQuery);
+                    const match = text.includes(q);
                     card.classList.toggle('hidden', !match);
                     card.classList.toggle('highlight', match);
                     if (match) {
@@ -1934,25 +2224,71 @@
                     firstTabWithMatches = tab.id;
                 }
             });
+
             if (totalMatches > 0) {
                 searchCount.textContent = `(${totalMatches})`;
                 searchClear.classList.add('visible');
+
                 const activeTab = document.querySelector('.tab-content.active');
                 if (activeTab) {
-                    const visibleCards = activeTab.querySelectorAll('.card:not(.hidden)');
-                    if (visibleCards.length === 0 && firstTabWithMatches) {
-                        const tabBtn = document.querySelector(`.tab-btn[data-tab="${firstTabWithMatches}"]`);
-                        if (tabBtn) tabBtn.click();
+                    const visible = activeTab.querySelectorAll('.card:not(.hidden)');
+                    if (visible.length === 0 && firstTabWithMatches) {
+                        switchTab(firstTabWithMatches);
                     }
                 }
+                highlightMatches(q);
             } else {
                 searchCount.textContent = '(0)';
                 searchClear.classList.add('visible');
+                clearHighlights();
             }
         }
 
+        function highlightMatches(query) {
+            clearHighlights();
+            const q = query.trim().toLowerCase();
+            if (q.length < 2) return;
+
+            const cards = document.querySelectorAll('.tab-content .card:not(.hidden)');
+            cards.forEach(card => {
+                const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT, {
+                    acceptNode(node) {
+                        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                        const parent = node.parentNode;
+                        if (!parent) return NodeFilter.FILTER_REJECT;
+                        const tag = parent.nodeName;
+                        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'BUTTON' || tag === 'MARK') return NodeFilter
+                            .FILTER_REJECT;
+                        return node.nodeValue.toLowerCase().includes(q) ? NodeFilter.FILTER_ACCEPT : NodeFilter
+                            .FILTER_REJECT;
+                    }
+                });
+                const targets = [];
+                let node;
+                while ((node = walker.nextNode())) targets.push(node);
+
+                targets.forEach(textNode => {
+                    const text = textNode.nodeValue;
+                    const lower = text.toLowerCase();
+                    const frag = document.createDocumentFragment();
+                    let i = 0;
+                    let idx;
+                    while ((idx = lower.indexOf(q, i)) !== -1) {
+                        if (idx > i) frag.appendChild(document.createTextNode(text.slice(i, idx)));
+                        const mark = document.createElement('mark');
+                        mark.className = 'search-hl';
+                        mark.textContent = text.slice(idx, idx + q.length);
+                        frag.appendChild(mark);
+                        i = idx + q.length;
+                    }
+                    if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
+                    textNode.parentNode.replaceChild(frag, textNode);
+                });
+            });
+        }
+
         searchInput.addEventListener('input', (e) => {
-            performSearch(e.target.value.trim());
+            performSearch(e.target.value);
         });
 
         searchClear.addEventListener('click', () => {
@@ -1961,12 +2297,26 @@
             searchInput.focus();
         });
 
-        // ===== МОДАЛЬНЫЕ ОКНА =====
-        const modalOverlay = document.getElementById('toolModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModalBtn = document.getElementById('closeModalBtn');
+        // ============================================================
+        // ГОРЯЧИЕ КЛАВИШИ
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                const tag = (document.activeElement && document.activeElement.tagName) || '';
+                if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+            } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                performSearch('');
+                searchInput.blur();
+            }
+        });
 
+        // ============================================================
+        // МОДАЛЬНЫЕ ОКНА
+        // ============================================================
         function openModal(toolKey) {
             const data = toolDetails[toolKey];
             if (!data) return;
@@ -1975,39 +2325,51 @@
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
+
         function closeModal() {
             modalOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
 
         document.querySelectorAll('.tool-details-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 openModal(btn.dataset.tool);
             });
         });
-        closeModalBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        // ===== КОПИРОВАНИЕ =====
-        document.addEventListener('click', e => {
-            if (e.target.classList.contains('copy-btn')) {
-                const text = e.target.dataset.copy;
-                if (text) {
-                    navigator.clipboard.writeText(text).then(() => {
-                        const orig = e.target.textContent;
-                        e.target.textContent = '✓';
-                        setTimeout(() => e.target.textContent = orig, 1500);
-                    });
-                }
-            }
+        closeModalBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
 
-        // ===== ЧЕК-ЛИСТ =====
-        const container = document.getElementById('checklistContainer');
-        const items = [
-            'Проверена cs2 по фасту (инвентарь, оверлей и т.д.)',
+        // ============================================================
+        // КОПИРОВАНИЕ
+        // ============================================================
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.copy-btn');
+            if (!btn) return;
+            const text = btn.dataset.copy;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.textContent;
+                btn.textContent = '✓';
+                setTimeout(() => { btn.textContent = orig; }, 1400);
+            }).catch(() => {
+                const orig = btn.textContent;
+                btn.textContent = 'Ошибка';
+                setTimeout(() => { btn.textContent = orig; }, 1400);
+            });
+        });
+
+        // ============================================================
+        // ЧЕК-ЛИСТ
+        // ============================================================
+        const checklistItems = [
+            'Проверена CS2 по фасту (инвентарь, оверлей и т.д.)',
             'Скачаны инструменты с официальных сайтов',
             'Проверка папок: Загрузки, C:\, AppData, LocalAppData, Program Files',
             'Проверка папки CS2 (на наличие Lua, DLL, .exe)',
@@ -2020,76 +2382,108 @@
             'Анализ памяти через System Informer (TIER 2)',
             'Фиксация доказательств (скриншоты, логи)'
         ];
-        let saved = {};
-        try { saved = JSON.parse(localStorage.getItem('cs2_checklist')) || {}; } catch { }
+
+        let checklistState = {};
+        try {
+            const saved = localStorage.getItem('cs2_checklist_v3');
+            if (saved) checklistState = JSON.parse(saved);
+        } catch {}
 
         function renderChecklist() {
             let html = '';
             let doneCount = 0;
-            items.forEach((label, idx) => {
-                const id = 'cl' + idx;
-                const checked = saved[id] || false;
+            checklistItems.forEach((label, idx) => {
+                const id = 'cl_' + idx;
+                const checked = !!checklistState[id];
                 if (checked) doneCount++;
                 html += `
-                    <div class="checklist-item ${checked ? 'done' : ''}" data-id="${id}">
-                        <input type="checkbox" ${checked ? 'checked' : ''}>
-                        <span>${label}</span>
-                    </div>
-                `;
+                        <div class="checklist-item ${checked ? 'done' : ''}" data-id="${id}">
+                            <input type="checkbox" ${checked ? 'checked' : ''} />
+                            <span>${label}</span>
+                        </div>
+                    `;
             });
-            container.innerHTML = html;
-            document.getElementById('checklistProgress').style.width = (doneCount / items.length * 100) + '%';
-            document.getElementById('checklistStats').textContent = `${doneCount} из ${items.length} выполнено`;
+            checklistContainer.innerHTML = html;
+            updateChecklistStats(doneCount);
         }
-        renderChecklist();
 
-        container.addEventListener('change', e => {
+        function updateChecklistStats(doneCount) {
+            const total = checklistItems.length;
+            const pct = total > 0 ? (doneCount / total) * 100 : 0;
+            checklistProgress.style.width = pct + '%';
+            checklistStats.textContent = `${doneCount} из ${total} выполнено`;
+        }
+
+        checklistContainer.addEventListener('change', (e) => {
             if (e.target.type === 'checkbox') {
                 const div = e.target.closest('.checklist-item');
                 const id = div.dataset.id;
-                saved[id] = e.target.checked;
-                localStorage.setItem('cs2_checklist', JSON.stringify(saved));
+                checklistState[id] = e.target.checked;
+                localStorage.setItem('cs2_checklist_v3', JSON.stringify(checklistState));
                 div.classList.toggle('done', e.target.checked);
                 let done = 0;
-                container.querySelectorAll('.checklist-item').forEach(el => {
+                checklistContainer.querySelectorAll('.checklist-item').forEach(el => {
                     if (el.querySelector('input').checked) done++;
                 });
-                document.getElementById('checklistProgress').style.width = (done / items.length * 100) + '%';
-                document.getElementById('checklistStats').textContent = `${done} из ${items.length} выполнено`;
+                updateChecklistStats(done);
             }
         });
 
-        // ===== ЭКСПОРТ =====
         document.getElementById('exportChecklistBtn').addEventListener('click', () => {
             const now = new Date().toLocaleString('ru-RU');
-            let text = `Чек-лист проверки CS2 — ${now}\n${'='.repeat(40)}\n\n`;
-            let doneCount = 0;
-            container.querySelectorAll('.checklist-item').forEach(el => {
+            let text = `Чек-лист проверки CS2 — ${now}\n${'='.repeat(44)}\n\n`;
+            let done = 0;
+            checklistContainer.querySelectorAll('.checklist-item').forEach(el => {
                 const checked = el.querySelector('input').checked;
                 const label = el.querySelector('span').textContent;
                 text += `${checked ? '[✓]' : '[ ]'} ${label}\n`;
-                if (checked) doneCount++;
+                if (checked) done++;
             });
-            text += `\n${'='.repeat(40)}\nВыполнено: ${doneCount} из ${items.length}`;
+            text += `\n${'='.repeat(44)}\nВыполнено: ${done} из ${checklistItems.length}`;
+
             const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `checklist_${new Date().toISOString().slice(0, 10)}.txt`;
+            link.download = `checklist_${new Date().toISOString().slice(0,10)}.txt`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
         });
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        document.getElementById('resetChecklistBtn').addEventListener('click', () => {
+            if (confirm('Сбросить все пункты чек-листа?')) {
+                checklistState = {};
+                localStorage.setItem('cs2_checklist_v3', JSON.stringify(checklistState));
+                renderChecklist();
+            }
+        });
+
+        // ============================================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================================
         buildToc();
+        renderChecklist();
+        updateScrollSpy();
+        setTimeout(updateScrollSpy, 100);
+        // Автоскролл к активной вкладке
+        setTimeout(() => {
+            const activeBtn = document.querySelector('.tab-btn.active');
+            if (activeBtn && tabsWrapper) {
+                const offset = activeBtn.offsetLeft - 20;
+                tabsWrapper.scrollTo({ left: offset, behavior: 'smooth' });
+            }
+        }, 200);
 
-        function scrollToSection(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'auto' });
-        }
-        window.scrollToSection = scrollToSection;
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('#sidebarList a')) {
+                sidebarList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        console.log('✅ CS2 Check — полностью загружен (горизонтальный скролл)');
     </script>
-</body>
 
+</body>
 </html> 
